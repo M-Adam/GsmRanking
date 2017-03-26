@@ -1,0 +1,24 @@
+﻿@if (TempData.ContainsKey(ViewContextExtension.ErrorKey))
+{
+    <div class="collapse show" id="errorCollapse">
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="close" data-toggle="collapse" data-target="#errorCollapse" aria-label="Close">
+                <span class="fa fa-times" aria-hidden="true"></span>
+            </button>
+            <strong>Error! </strong><span id="errorAlertContent">@TempData[ViewContextExtension.ErrorKey]</span>
+        </div>
+    </div>
+}
+
+
+@if (TempData.ContainsKey(ViewContextExtension.SuccessKey))
+{
+    <div class="collapse show" id="successCollapse">
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="close" data-toggle="collapse" data-target="#successCollapse" aria-label="Close">
+                <span class="fa fa-times" aria-hidden="true"></span>
+            </button>
+            <strong>Success! </strong><span id="successAlertContent">@TempData[ViewContextExtension.SuccessKey]</span>
+        </div>
+    </div>
+}

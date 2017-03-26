@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GsmRanking.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : GsmRankingBaseController
     {
         public IActionResult Index()
         {
