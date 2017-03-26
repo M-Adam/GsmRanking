@@ -1,0 +1,40 @@
+﻿<nav class="navbar navbar-inverse bg-inverse navbar-toggleable-md" id="navbar-fixed">
+    <a asp-controller="Home" asp-action="Index" class="navbar-brand">GsmRanking</a>
+    <ul class="nav navbar-nav">
+        @*@if (Model.IsAdmin)
+        {
+            <li class="nav-item">
+                <navitem controller="Administrator" action="Index" class="nav-link"><fa class="fa-cogs" /> Admin</navitem>
+            </li>
+        }*@
+    </ul>
+    <ul class="navbar-nav float-right mr-auto">
+        @*@if (User.IsLoggedIn())
+        {
+            <li class="nav-item">
+                <navitem controller="User" action="UserData" class="nav-link"><fa class="fa-user" /> My Account</navitem>
+            </li>
+            <li class="nav-item">
+                <navitem controller="Account" action="Logout" class="nav-link"><fa class="fa-sign-out" /> Logout</navitem>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <navitem controller="Account" action="Register" class="nav-link"><fa class="fa-child" /> Register</navitem>
+            </li>
+            <li class="nav-item">
+                <navitem controller="Account" action="Login" class="nav-link"><fa class="fa-sign-in" /> Login</navitem>
+            </li>
+        }
+        <li class="nav-item">
+            <a asp-controller="Cart" asp-action="Show" class="nav-link">
+                <fa class="fa-shopping-basket" /> Cart <span id="cart-count"></span>
+            </a>
+        </li>*@
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+        @*<div class="input-group-addon" id="search-btndiv"><fa class="fa-search fa-fw" /></div>*@
+        <input id="query" class="form-control" type="text" placeholder="Search" />
+    </form>
+</nav>
