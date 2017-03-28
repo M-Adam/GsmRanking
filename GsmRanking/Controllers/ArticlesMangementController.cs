@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GsmRanking.Viewmodels.News
+namespace GsmRanking.Controllers
 {
-    public class NewsCarouselViewModel
+    public class ArticlesMangementController : GsmRankingBaseController
     {
     }
 }
