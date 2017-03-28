@@ -2287,6 +2287,7 @@ pre code {
   opacity: 1;
 }
 
+/* ReSharper disable once CssNotResolved */
 .form-control::placeholder {
   color: #636c72;
   opacity: 1;
