@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GsmRanking.Viewmodels.Home;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,11 @@ namespace GsmRanking.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var viewModel = new HomepageViewModel()
+            {
+                
+            };
+            return View(viewModel);
         }
 
         public IActionResult About()
