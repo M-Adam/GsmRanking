@@ -34,14 +34,6 @@
     <Content Include="wwwroot\lib\font-awesome\fonts\FontAwesome.otf" />
     <Content Include="wwwroot\lib\jquery-validation\jquery.validate.js" />
     <Content Include="wwwroot\lib\jquery-validation\jquery.validate.min.js" />
-    <Content Include="wwwroot\lib\jquery.js" />
-    <Content Include="wwwroot\lib\jquery.min.js" />
-    <Content Include="wwwroot\lib\jquery.min.map" />
-    <Content Include="wwwroot\lib\jquery.slim.js" />
-    <Content Include="wwwroot\lib\jquery.slim.min.js" />
-    <Content Include="wwwroot\lib\jquery.slim.min.map" />
-    <Content Include="wwwroot\lib\jquery.validate.js" />
-    <Content Include="wwwroot\lib\jquery.validate.min.js" />
     <Content Include="wwwroot\lib\jquery\jquery.js" />
     <Content Include="wwwroot\lib\jquery\jquery.min.js" />
     <Content Include="wwwroot\lib\jquery\jquery.min.map" />
@@ -51,9 +43,6 @@
     <Content Include="wwwroot\lib\jquery\sizzle.js" />
     <Content Include="wwwroot\lib\jquery\sizzle.min.js" />
     <Content Include="wwwroot\lib\jquery\sizzle.min.map" />
-    <Content Include="wwwroot\lib\sizzle.js" />
-    <Content Include="wwwroot\lib\sizzle.min.js" />
-    <Content Include="wwwroot\lib\sizzle.min.map" />
     <Content Include="wwwroot\lib\tether\tether.css" />
     <Content Include="wwwroot\lib\tether\tether.js" />
     <Content Include="wwwroot\lib\tether\tether.min.css" />
@@ -82,6 +71,10 @@
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Viewmodels\ArticlesMangement\" />
+    <Folder Include="Views\ArticlesManagement\" />
   </ItemGroup>
 
 </Project>

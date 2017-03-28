@@ -1,6 +1,6 @@
 ﻿namespace GsmRanking.Viewmodels.News
 {
-    public class NewsListCarouselViewModel
+    public class NewsListCardViewModel
     {
         public string Url { get; set; }
         public string Title { get; set; }
