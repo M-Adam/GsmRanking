@@ -25,5 +25,7 @@ namespace GsmRanking.ViewComponents
             };
             return View("~/Views/Shared/Components/_Carousel.cshtml", model);
         }
+
+        
     }
 }

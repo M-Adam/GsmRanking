@@ -1,4 +1,5 @@
-﻿@*@if (TempData.ContainsKey(ViewContextExtension.ErrorKey))
+﻿@using GsmRanking.Common
+@if (TempData.ContainsKey(ViewContextExtension.ErrorKey))
 {
     <div class="collapse show" id="errorCollapse">
         <div class="alert alert-danger" role="alert">
@@ -21,4 +22,4 @@
             <strong>Success! </strong><span id="successAlertContent">@TempData[ViewContextExtension.SuccessKey]</span>
         </div>
     </div>
-}*@
+}
