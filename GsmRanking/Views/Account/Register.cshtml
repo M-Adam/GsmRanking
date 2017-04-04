@@ -1,18 +1,40 @@
-﻿@model TModel
+﻿@model GsmRanking.Viewmodels.Account.RegisterViewModel
 
 @{
-    Layout = null;
+    ViewBag.Title = "Rejestracja";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
+<h2>Register</h2>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Register" asp-controller="Account" asp-antiforgery="true" Method="post">
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" type="text" class="form-control" placeholder="Username" required aria-describedby="usernameHelp" />
+                <small id="usernameHelp" class="form-text text-muted">Twój login</small>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" placeholder="E-mail address" required aria-describedby="emailHelp" />
+                <small id="emailHelp" class="form-text text-muted">Adres e-mail</small>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" type="password" id="password-input" class="form-control" placeholder="Password" required aria-describedby="passwordHelp" />
+                <small id="passwordHelp" class="form-text text-muted">Hasło</small>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Załóż konto</button>
+            
+        </form>
+    </div>
+    <div class="col-md-6" style="background-color: blanchedalmond">
+        Rejestracja przez zewnętrzne serwisy.
+    </div>
 </div>
-</body>
-</html>
+
+@section Scripts{
+    <!--ToDo: add validation scripts-->
+}

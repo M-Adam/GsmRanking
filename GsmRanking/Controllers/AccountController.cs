@@ -42,7 +42,7 @@ namespace GsmRanking.Controllers
 
                 //_userService.RegisterUser(viewModel.UserName, viewModel.Email, viewModel.Password);
                 //LogInfo(Events.Account_Register);
-                SetSuccess("Registration success.");
+                SetSuccess("Rejestracja zakończona sukcesem.");
             }
             catch (Exception e)
             {
@@ -78,7 +78,7 @@ namespace GsmRanking.Controllers
                 //        });
 
                 //LogInfo(Events.Account_Login);
-                SetSuccess("You have successfully logged in!");
+                SetSuccess("Zalogowałeś się!");
 
                 return Ok();
             }
@@ -101,7 +101,8 @@ namespace GsmRanking.Controllers
         {
             if (!User.IsLoggedIn())
             {
-                return View("Login", new LoginViewModel() { ReturnUrl = returnUrlParameter });
+                SetError("Nie masz wystarczających uprawnień.");
+                return RedirectToAction("Index", "Home");
             }
             return LocalRedirect(returnUrlParameter);
         }

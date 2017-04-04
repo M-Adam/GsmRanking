@@ -16,12 +16,12 @@ namespace GsmRanking.Controllers
 
         protected void SetError(Exception e)
         {
-            TempData[ViewContextExtension.ErrorKey] = e.GetExceptionMessage();
+            SetError(e.GetExceptionMessage());
         }
 
-        public static string GetExceptionMessage(this Exception e)
+        protected void SetError(string error)
         {
-            return e.InnerException == null ? e.Message : GetExceptionMessage(e.InnerException);
+            TempData[ViewContextExtension.ErrorKey] = error;
         }
     }
 }
