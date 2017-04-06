@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GsmRanking.Common;
 using GsmRanking.Viewmodels.Account;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -60,8 +61,7 @@ namespace GsmRanking.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel.Password = string.Empty;
-                return View(viewModel);
+                return BadRequest();
             }
 
             try
@@ -86,8 +86,7 @@ namespace GsmRanking.Controllers
             {
                 //LogException(Events.Account_Login, e);
                 SetError(e);
-                viewModel.Password = null;
-                return View(viewModel);
+                return BadRequest(e);
             }
         }
 
