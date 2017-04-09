@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using GsmRanking.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -50,6 +51,7 @@ namespace GsmRanking
             services.AddDbContext<GsmRankingContext>(options => options.UseSqlServer(connection));
 
             services.AddAuthorization();
+            services.AddAutoMapper();
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
         }
 
