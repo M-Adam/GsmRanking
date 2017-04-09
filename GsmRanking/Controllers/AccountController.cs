@@ -16,12 +16,12 @@ namespace GsmRanking.Controllers
     [AllowAnonymous]
     public class AccountController : GsmRankingBaseController
     {
-        private readonly DbContext _context;
+        //private readonly DbContext _context;
 
-        public AccountController(DbContext context)
-        {
-            _context = context;
-        }
+        //public AccountController(DbContext context)
+        //{
+        //    _context = context;
+        //}
         
         public IActionResult Register()
         {

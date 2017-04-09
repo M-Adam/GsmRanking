@@ -12,10 +12,16 @@
 @await newsCarousel
 
 @await newsCards
+<div class="clearfix" style="height: 300px"></div>
+<div class="row">
+    <div class="col-9">
+        @await articles        
+    </div>
+    <div class="col-3">
+        @await phones        
+    </div>
+</div>
 
-@await articles
-
-@await phones
 
 <div class="row">
     <div class="col-md-3">

@@ -2,6 +2,23 @@
 
 <div class="row">
     <div class="col">
-        <!-- Cztery cardy bootstrapowe -->
+        <div class="card-deck">
+            @foreach (var news in Model.News)
+            {
+                <div class="card" style="max-width: 200px; max-height: 200px; height: 200px">
+                    <img class="card-img-top" src="data:image/jpg;base64,@news.Photo" alt="@news.Title">
+                    <div class="card-block">
+                        <h4 class="card-title">@news.Title</h4>
+                        <p class="card-text">@news.ShortDescription<p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">@news.PublishDate</small>
+                    </div>
+                </div>    
+            }
+        </div>
     </div>
 </div>
+
+
+
