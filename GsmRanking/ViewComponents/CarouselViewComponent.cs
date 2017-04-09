@@ -9,12 +9,12 @@ namespace GsmRanking.ViewComponents
 {
     public class CarouselViewComponent : ViewComponent
     {
-        private readonly DbContext _context;
+        //private readonly DbContext _context;
         
-        public CarouselViewComponent(DbContext context)
-        {
-            _context = context;
-        }
+        //public CarouselViewComponent(DbContext context)
+        //{
+        //    _context = context;
+        //}
 
         public async Task<IViewComponentResult> InvokeAsync()
         {

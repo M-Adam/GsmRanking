@@ -1,10 +1,17 @@
-﻿@model GsmRanking.Viewmodels.Home.HomepageViewModel
+﻿@using GsmRanking.ViewComponents
+@model GsmRanking.Viewmodels.Home.HomepageViewModel
 
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Strona główna";
+    var newsCarousel = Component.InvokeAsync<CarouselViewComponent>();
+    var newsCards = Component.InvokeAsync<NewsCardsViewComponent>();
     var articles = @Html.PartialAsync("~/Views/Articles/_ArticlesMainPage.cshtml", Model.NewestArticles);
     var phones = @Html.PartialAsync("~/Views/Phones/_NewestPhonesList.cshtml", Model.NewestPhones);
 }
+
+@await newsCarousel
+
+@await newsCards
 
 @await articles
 
