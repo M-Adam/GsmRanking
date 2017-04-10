@@ -41,8 +41,8 @@ namespace GsmRanking.Models
                     .HasColumnName("ISPUBLISHED")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Publicdate)
-                    .HasColumnName("PUBLICDATE")
+                entity.Property(e => e.Publishdate)
+                    .HasColumnName("PUBLISHDATE")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Shorttext)
