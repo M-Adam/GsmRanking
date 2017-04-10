@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using GsmRanking.Services;
 
 namespace GsmRanking
 {
@@ -47,8 +48,14 @@ namespace GsmRanking
             //Add EF DbContext
             services.AddMvc();
 
+            
             var connection = Configuration.GetConnectionString("Database");
             services.AddDbContext<GsmRankingContext>(options => options.UseSqlServer(connection));
+
+            //Dependency injection mapping
+            services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IPhoneService, PhoneService>();
 
             services.AddAuthorization();
             services.AddAutoMapper();

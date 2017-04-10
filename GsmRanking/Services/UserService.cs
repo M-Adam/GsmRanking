@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GsmRanking.Services
 {
-    public class UserService
+    public class UserService : GsmRankingBaseService, IUserService
     {
     }
 
