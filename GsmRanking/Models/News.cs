@@ -14,5 +14,6 @@ namespace GsmRanking.Models
         public DateTime Publicdate { get; set; }
         public bool Ispublished { get; set; }
         public int Viewscount { get; set; }
+        public string Image { get; set; }
     }
 }

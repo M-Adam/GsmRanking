@@ -1,31 +1,31 @@
-﻿@model GsmRanking.Viewmodels.News.NewsCardViewModel
+﻿@model List<GsmRanking.Viewmodels.News.NewsSlideViewModel>
 
-<div class="row">
+<div class="jumbotron">
     <div class="col">
         <div id="carousel-main" class="carousel" data-ride="carousel">
 
             <ol class="carousel-indicators">
                 <li data-target="#carousel-main" data-slide-to="0" class="active"></li>
-                @for (int i = 1; i < Model.News.Count; i++)
+                @for (int i = 1; i < Model.Count; i++)
                 {
                     <li data-target="#carousel-main" data-slide-to="@i"></li>
                 }
             </ol>
 
             <div class="carousel-inner" role="listbox">
-                <div class="carousel-item active" style="width: auto; height: 300px; max-height: 300px">
-                    <img src="data:image/jpg;base64,@Model.News[0].Photo" alt="@Model.News[0].Title" class="d-block img-fluid">
-                    <div class="carousel-caption d-none d-md-block">
-                        @Model.News[0].Title
+                <div class="carousel-item active">
+                    <img src="data:image/jpg;base64,@Model[0].Image" alt="@Model[0].Title" class="d-block img-fluid" style="width: auto; max-height: 250px;">
+                    <div class="carousel-caption d-none d-md-block" style="color: black;">
+                        @Model[0].Title
                     </div>
                 </div>
 
-                @for (int i = 1; i < Model.News.Count; i++)
+                @for (int i = 1; i < Model.Count; i++)
                 {
-                    <div class="carousel-item" style="width: auto; height: 300px; max-height: 300px">
-                        <img src="data:image/jpg;base64,@Model.News[i].Photo" alt="@Model.News[i].Title">
-                        <div class="carousel-caption d-none d-md-block">
-                            @Model.News[i].Title
+                    <div class="carousel-item">
+                        <img src="data:image/jpg;base64,@Model[i].Image" alt="@Model[i].Title" style="width: auto; max-height: 250px;">
+                        <div class="carousel-caption d-none d-md-block" style="color: black;" >
+                            @Model[i].Title
                         </div>
                     </div>
                 }

@@ -15,14 +15,20 @@ namespace GsmRanking.Services
             _context = context;
         }
 
-        public IEnumerable<News> GetAllNews()
+        public List<News> GetAllNews()
         {
-            return _context.News;
+            return _context.News.ToList();
+        }
+
+        public News GetNewsById(int id)
+        {
+            return _context.News.Where(n => n.IdNews == id).FirstOrDefault();
         }
     }
 
     public interface INewsService
     {
-        IEnumerable<News> GetAllNews();
+        List<News> GetAllNews();
+        News GetNewsById(int id);
     }
 }

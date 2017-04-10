@@ -48,7 +48,6 @@ namespace GsmRanking
             //Add EF DbContext
             services.AddMvc();
 
-            
             var connection = Configuration.GetConnectionString("Database");
             services.AddDbContext<GsmRankingContext>(options => options.UseSqlServer(connection));
 
