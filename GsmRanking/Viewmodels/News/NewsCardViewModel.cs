@@ -11,6 +11,7 @@ namespace GsmRanking.Viewmodels.News
         public string Title { get; set; }
         public string ShortDescription { get; set; }
         public string Image { get; set; }
-        public DateTime PublishDate { get; set; }
+        public bool IsPublished { get; set; }
+        public DateTime? PublishDate { get; set; }
     }
 }

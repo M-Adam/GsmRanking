@@ -1,6 +1,8 @@
 ﻿<nav class="navbar navbar-inverse bg-inverse navbar-toggleable-md" id="navbar-fixed">
     <a asp-controller="Home" asp-action="Index" class="navbar-brand">GsmRanking</a>
+
     <ul class="nav navbar-nav">
+        <li class="nav-item"><a asp-controller="News" asp-action="Index">News</a></li>
         @*@if (Model.IsAdmin)
         {
             <li class="nav-item">

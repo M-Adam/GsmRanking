@@ -1,0 +1,46 @@
+﻿@model GsmRanking.Viewmodels.News.NewsCreateViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body class="panel-body">
+    <h3>Create News</h3>
+    <form asp-controller="News" asp-action="Create" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div>
+            <span class="text-danger">@Html.ValidationSummary()</span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Title) <br>
+            @Html.EditorFor(m => m.Title)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Ispublished)
+            @Html.EditorFor(m => m.Ispublished)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Shorttext) <br>
+            @Html.EditorFor(m => m.Shorttext)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Content) <br>
+            @Html.EditorFor(m => m.Content)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ImageUpload) <br>
+            @Html.EditorFor(m => m.ImageUpload)
+        </div>
+      
+        <button type="submit" class="btn btn-primary">Add</button>
+        <a asp-action="Index" class="btn btn-default">Cancel</a>
+    </form>
+</body>
+</html>

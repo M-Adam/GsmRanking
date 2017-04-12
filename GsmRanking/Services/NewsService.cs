@@ -15,6 +15,12 @@ namespace GsmRanking.Services
             _context = context;
         }
 
+        public void AddNews(News news)
+        {
+            _context.Add(news);
+            _context.SaveChanges();
+        }
+
         public List<News> GetAllNews()
         {
             return _context.News.ToList();
@@ -22,7 +28,7 @@ namespace GsmRanking.Services
 
         public News GetNewsById(int id)
         {
-            return _context.News.Where(n => n.IdNews == id).FirstOrDefault();
+            return _context.News.SingleOrDefault(n => n.IdNews == id);
         }
     }
 
@@ -30,5 +36,6 @@ namespace GsmRanking.Services
     {
         List<News> GetAllNews();
         News GetNewsById(int id);
+        void AddNews(News news);
     }
 }

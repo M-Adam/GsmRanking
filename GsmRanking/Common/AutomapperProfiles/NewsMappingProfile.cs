@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GsmRanking.Viewmodels.News;
+using GsmRanking.Models;
 
 namespace GsmRanking.Common.AutomapperProfiles
 {
@@ -10,7 +12,8 @@ namespace GsmRanking.Common.AutomapperProfiles
     {
         public NewsMappingProfile()
         {
-            //CreateMap<>()
+            CreateMap<News, NewsCreateViewModel>();
+            CreateMap<NewsCreateViewModel, News>();
         }
     }
 }

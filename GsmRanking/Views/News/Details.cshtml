@@ -1,22 +1,11 @@
-﻿@model IEnumerable<GsmRanking.Models.News>
+﻿@using GsmRanking.Models;
+@model News
 
 @{
-    Layout = null;
+    Layout = "_Layout";
 }
 
-<!DOCTYPE html>
+<h1>News @Model.IdNews</h1>
+<p>@Model.Content</p>
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      @foreach (var news in Model)
-      {
-          <h3>@news.Title</h3>
-          <p>@news.Content</p>
-      }
-</div>
-</body>
-</html>
+

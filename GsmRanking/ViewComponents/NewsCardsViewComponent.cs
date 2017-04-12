@@ -31,6 +31,7 @@ namespace GsmRanking.ViewComponents
                     Url = Url.Action("Details", "News", new { id = news.IdNews }),
                     Title = news.Title,
                     ShortDescription = news.Shorttext,
+                    IsPublished = news.Ispublished,
                     PublishDate = news.Publishdate,
                     Image = news.Image
                 });
