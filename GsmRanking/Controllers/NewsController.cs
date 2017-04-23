@@ -6,6 +6,7 @@ using GsmRanking.Viewmodels.News;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,11 @@ namespace GsmRanking.Controllers
     {
         private readonly INewsService _newsService;
         private readonly IMapper _mapper;
+
+        public const int ImageMaxWidth = 700;
+        public const int ImageMaxHeight = 700;
+        public const int ImageMinWidth = 100;
+        public const int ImageMinHeight = 100;
 
         public NewsController([FromServices] INewsService newsService, [FromServices] IMapper mapper)
         {
@@ -44,28 +50,32 @@ namespace GsmRanking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(NewsCreateViewModel n)
         {
-            //TODO: Add model validation, implement UI messages
             try
             {
                 var news = _mapper.Map<NewsCreateViewModel, News>(n);
                 
-                //TODO: Image size constraints validation
                 using (var memoryStream = new MemoryStream())
                 {
                     if(n.ImageUpload != null)
                     {
                         await n.ImageUpload.CopyToAsync(memoryStream);
+                        using (var image = new Bitmap(Image.FromStream(memoryStream)))
+                        {
+                            if(!ValidateImageSize(image))
+                            {
+                                return View(n);
+                            }
+                        }
                         news.Image = Convert.ToBase64String(memoryStream.ToArray());
                         news.CreateDate = DateTime.Now;
                     }
-                    
                 }
                 _newsService.AddNews(news);
-                SetSuccess($"News: '{n.Title}' has been created.");
+                SetSuccess($"Pomyślnie utworzono news '{n.Title}'");
             }
             catch (Exception ex)
             {
-                SetError(ex.Message);
+                SetError(ex);
             }
             return RedirectToAction("Index");
         }
@@ -74,6 +84,32 @@ namespace GsmRanking.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        private bool ValidateImageSize(Bitmap image)
+        {
+            bool isValid = true;
+            if (image.Width > ImageMaxWidth)
+            {
+                ModelState.AddModelError("ImageUpload", $"Szerokość obrazka przekracza {ImageMaxWidth}px");
+                isValid = false;
+            }
+            if (image.Width < ImageMinWidth)
+            {
+                ModelState.AddModelError("ImageUpload", $"Szerokość obrazka musi być większa niż {ImageMinWidth}px");
+                isValid = false;
+            }
+            if (image.Height > ImageMaxHeight)
+            {
+                ModelState.AddModelError("ImageUpload", $"Wysokość obrazka przekracza {ImageMaxHeight}px");
+                isValid = false;
+            }
+            if (image.Height < ImageMinHeight)
+            {
+                ModelState.AddModelError("ImageUpload", $"Wysokość obrazka musi być większa niż {ImageMinHeight}px");
+                isValid = false;
+            }
+            return isValid;
         }
     }
 }
