@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GsmRanking.Models;
 using GsmRanking.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,12 +10,12 @@ namespace GsmRanking.Controllers
 {
     public class ValidationController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly GsmRankingContext _context;
 
-        //public ValidationController(IUserService userService)
-        //{
-        //    _userService = userService;
-        //}
+        public ValidationController(GsmRankingContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
         public async Task<JsonResult> VerifyUsername(string username)

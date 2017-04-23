@@ -7,25 +7,21 @@ namespace GsmRanking.Common
 {
     public static class Hasher
     {
-        public static string HashPassword(string password, string username)
+        public static string HashPassword(string password)
         {
-            byte[] salt = Encoding.UTF8.GetBytes(username);
-            byte[] passwordByte = Encoding.UTF8.GetBytes(password);
+            var passwordByte = Encoding.UTF8.GetBytes(password);
             string result;
             using (var sha = SHA256.Create())
             {
-                int half = salt.Length / 2;
-                var firstHalf = salt.Take(half);
-                var secondHalf = salt.Skip(half);
-                var hashedBytes = sha.ComputeHash(firstHalf.Concat(passwordByte).Concat(secondHalf).ToArray());
+                var hashedBytes = sha.ComputeHash(passwordByte).ToArray();
                 result = BitConverter.ToString(hashedBytes).Replace("-", "").ToLowerInvariant();
             }
             return result;
         }
 
-        public static bool IsPasswordValid(string username, string storedPassword, string givenPassword)
+        public static bool IsPasswordValid(string storedPassword, string givenPassword)
         {
-            var givenPasswordHash = HashPassword(givenPassword, username);
+            var givenPasswordHash = HashPassword(givenPassword);
             return givenPasswordHash == storedPassword;
         }
     }

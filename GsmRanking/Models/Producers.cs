@@ -10,7 +10,7 @@ namespace GsmRanking.Models
             Phones = new HashSet<Phones>();
         }
 
-        public int Producerid { get; set; }
+        public int IdProducer { get; set; }
         public string ProducerName { get; set; }
 
         public virtual ICollection<Phones> Phones { get; set; }

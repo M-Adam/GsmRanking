@@ -5,12 +5,21 @@ namespace GsmRanking.Models
 {
     public partial class Users
     {
-        public int Userid { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
+        public Users()
+        {
+            Articles = new HashSet<Articles>();
+            Comments = new HashSet<Comments>();
+        }
+
+        public int IdUser { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
-        public string Userpass { get; set; }
-        public bool Isadmin { get; set; }
+        public string UserPassword { get; set; }
+        public byte UserType { get; set; }
+
+        public virtual ICollection<Articles> Articles { get; set; }
+        public virtual ICollection<Comments> Comments { get; set; }
     }
 }

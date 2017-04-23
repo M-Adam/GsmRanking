@@ -33,7 +33,7 @@ namespace GsmRanking.Controllers
             var news = _newsService.GetNewsById(id);
             if(news == null)
             {
-                TempData[ViewContextExtension.ErrorKey] = $"News with id '{id}' not found.";
+                SetError($"News with id '{id}' not found.");
                 return RedirectToAction("Index");
             }
 
@@ -56,16 +56,16 @@ namespace GsmRanking.Controllers
                     {
                         await n.ImageUpload.CopyToAsync(memoryStream);
                         news.Image = Convert.ToBase64String(memoryStream.ToArray());
-                        news.Createdate = DateTime.Now;
+                        news.CreateDate = DateTime.Now;
                     }
                     
                 }
                 _newsService.AddNews(news);
-                TempData[ViewContextExtension.SuccessKey] = $"News: '{n.Title}' has been created.";
+                SetSuccess($"News: '{n.Title}' has been created.");
             }
             catch (Exception ex)
             {
-                TempData[ViewContextExtension.ErrorKey] = ex.Message;
+                SetError(ex.Message);
             }
             return RedirectToAction("Index");
         }

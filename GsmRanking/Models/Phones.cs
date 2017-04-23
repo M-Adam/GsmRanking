@@ -5,23 +5,28 @@ namespace GsmRanking.Models
 {
     public partial class Phones
     {
+        public Phones()
+        {
+            Comments = new HashSet<Comments>();
+        }
+
         public string Model { get; set; }
         public string Kind { get; set; }
         public string Screen { get; set; }
-        public int? Batterycapacity { get; set; }
-        public bool? Fastcharge { get; set; }
-        public bool? Inducharge { get; set; }
+        public int? BatteryCapacity { get; set; }
+        public bool? FastCharge { get; set; }
+        public bool? InduCharge { get; set; }
         public bool? Ip68 { get; set; }
         public int? Memory { get; set; }
-        public bool? Sdcard { get; set; }
-        public string Sdcardinfo { get; set; }
-        public string Oswork { get; set; }
+        public bool? SdCard { get; set; }
+        public string SdCardInfo { get; set; }
+        public string OsWork { get; set; }
         public string Cpu { get; set; }
-        public bool? Touchscreen { get; set; }
-        public bool? Dualsim { get; set; }
-        public DateTime? Premierdate { get; set; }
-        public string Rearcamera { get; set; }
-        public string Frontcamera { get; set; }
+        public bool? TouchScreen { get; set; }
+        public bool? DualSim { get; set; }
+        public DateTime? PremierDate { get; set; }
+        public string RearCamera { get; set; }
+        public string FrontCamera { get; set; }
         public string Con { get; set; }
         public bool? Lte { get; set; }
         public bool? Hsdpaplus { get; set; }
@@ -31,18 +36,19 @@ namespace GsmRanking.Models
         public bool? Gprs { get; set; }
         public bool? Edge { get; set; }
         public bool? Bt { get; set; }
-        public string Btinfo { get; set; }
+        public string BtInfo { get; set; }
         public bool? A2dp { get; set; }
         public bool? Wifi { get; set; }
-        public string Wifinfo { get; set; }
+        public string WifiInfo { get; set; }
         public bool? Dlna { get; set; }
-        public bool? Hswifi { get; set; }
+        public bool? HotSpotWifi { get; set; }
         public bool? Irda { get; set; }
         public bool? Gps { get; set; }
         public bool? Nfc { get; set; }
-        public int Producerid { get; set; }
-        public int PhoneId { get; set; }
+        public int IdProducer { get; set; }
+        public int IdPhone { get; set; }
 
-        public virtual Producers Producer { get; set; }
+        public virtual ICollection<Comments> Comments { get; set; }
+        public virtual Producers IdProducerNavigation { get; set; }
     }
 }

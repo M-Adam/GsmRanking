@@ -6,65 +6,110 @@ namespace GsmRanking.Models
 {
     public partial class GsmRankingContext : DbContext
     {
+        public virtual DbSet<Articles> Articles { get; set; }
+        public virtual DbSet<Comments> Comments { get; set; }
         public virtual DbSet<News> News { get; set; }
         public virtual DbSet<Phones> Phones { get; set; }
         public virtual DbSet<Producers> Producers { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
-        public GsmRankingContext(DbContextOptions<GsmRankingContext> options) : base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+            optionsBuilder.UseSqlServer(@"Data Source=gsmranking.database.windows.net;Initial Catalog=GsmRanking;Integrated Security=False;User ID=gsmdbadmin;Password=1qa2ws#ED;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<News>(entity =>
+            modelBuilder.Entity<Articles>(entity =>
             {
-                entity.HasKey(e => e.IdNews)
-                    .HasName("PK__NEWS__A988CD5A261782A0");
+                entity.HasKey(e => e.IdArticle)
+                    .HasName("PK__Articles__2CC641E4540FEC23");
 
-                entity.ToTable("NEWS");
+                entity.Property(e => e.Content).HasColumnType("text");
 
-                entity.Property(e => e.IdNews).HasColumnName("ID_NEWS");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Content)
-                    .HasColumnName("CONTENT")
-                    .HasColumnType("text");
+                entity.Property(e => e.Image).HasColumnType("varchar(max)");
 
-                entity.Property(e => e.Createdate)
-                    .HasColumnName("CREATEDATE")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.IsPublished).HasDefaultValueSql("0");
 
-                entity.Property(e => e.IdAutor).HasColumnName("ID_AUTOR");
+                entity.Property(e => e.PublishDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Ispublished)
-                    .HasColumnName("ISPUBLISHED")
-                    .HasDefaultValueSql("0");
-
-                entity.Property(e => e.Publishdate)
-                    .HasColumnName("PUBLISHDATE")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Shorttext)
-                    .HasColumnName("SHORTTEXT")
-                    .HasColumnType("varchar(255)");
+                entity.Property(e => e.ShortText).HasColumnType("varchar(255)");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
-                    .HasColumnName("TITLE")
                     .HasColumnType("varchar(255)");
 
-                entity.Property(e => e.Viewscount)
-                    .HasColumnName("VIEWSCOUNT")
-                    .HasDefaultValueSql("0");
+                entity.Property(e => e.ViewsCount).HasDefaultValueSql("0");
+
+                entity.HasOne(d => d.IdAutorNavigation)
+                    .WithMany(p => p.Articles)
+                    .HasForeignKey(d => d.IdAutor)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK__Articles__IdAuto__7BE56230");
+            });
+
+            modelBuilder.Entity<Comments>(entity =>
+            {
+                entity.HasKey(e => e.IdComment)
+                    .HasName("PK__Comments__57C9AD58DB2A5A3A");
+
+                entity.Property(e => e.Content).HasColumnType("text");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.IdArticleNavigation)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.IdArticle)
+                    .HasConstraintName("FK__Comments__IdArti__7EC1CEDB");
+
+                entity.HasOne(d => d.IdAutorNavigation)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.IdAutor)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK__Comments__IdAuto__7CD98669");
+
+                entity.HasOne(d => d.IdNewsNavigation)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.IdNews)
+                    .HasConstraintName("FK__Comments__IdNews__7DCDAAA2");
+
+                entity.HasOne(d => d.IdPhoneNavigation)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.IdPhone)
+                    .HasConstraintName("FK__Comments__IdPhon__7FB5F314");
+            });
+
+            modelBuilder.Entity<News>(entity =>
+            {
+                entity.HasKey(e => e.IdNews)
+                    .HasName("PK__News__4559C72DE043E053");
+
+                entity.Property(e => e.Content).HasColumnType("text");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Image).HasColumnType("varchar(max)");
+
+                entity.Property(e => e.IsPublished).HasDefaultValueSql("0");
+
+                entity.Property(e => e.PublishDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ShortText).HasColumnType("varchar(255)");
+
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)");
+
+                entity.Property(e => e.ViewsCount).HasDefaultValueSql("0");
             });
 
             modelBuilder.Entity<Phones>(entity =>
             {
-                entity.HasKey(e => e.PhoneId)
-                    .HasName("PK__PHONES__F3EE4BB0434079F0");
-
-                entity.ToTable("PHONES");
+                entity.HasKey(e => e.IdPhone)
+                    .HasName("PK__Phones__7F4A3AF04891BE6F");
 
                 entity.HasIndex(e => e.Model)
                     .HasName("Indeks_Model");
@@ -73,15 +118,11 @@ namespace GsmRanking.Models
                     .HasColumnName("A2DP")
                     .HasDefaultValueSql("1");
 
-                entity.Property(e => e.Batterycapacity).HasColumnName("BATTERYCAPACITY");
-
                 entity.Property(e => e.Bt)
                     .HasColumnName("BT")
                     .HasDefaultValueSql("1");
 
-                entity.Property(e => e.Btinfo)
-                    .HasColumnName("BTINFO")
-                    .HasColumnType("varchar(10)");
+                entity.Property(e => e.BtInfo).HasColumnType("varchar(10)");
 
                 entity.Property(e => e.Con)
                     .HasColumnName("CON")
@@ -95,21 +136,15 @@ namespace GsmRanking.Models
                     .HasColumnName("DLNA")
                     .HasDefaultValueSql("1");
 
-                entity.Property(e => e.Dualsim)
-                    .HasColumnName("DUALSIM")
-                    .HasDefaultValueSql("0");
+                entity.Property(e => e.DualSim).HasDefaultValueSql("0");
 
                 entity.Property(e => e.Edge)
                     .HasColumnName("EDGE")
                     .HasDefaultValueSql("1");
 
-                entity.Property(e => e.Fastcharge)
-                    .HasColumnName("FASTCHARGE")
-                    .HasDefaultValueSql("0");
+                entity.Property(e => e.FastCharge).HasDefaultValueSql("0");
 
-                entity.Property(e => e.Frontcamera)
-                    .HasColumnName("FRONTCAMERA")
-                    .HasColumnType("varchar(100)");
+                entity.Property(e => e.FrontCamera).HasColumnType("varchar(100)");
 
                 entity.Property(e => e.Gprs)
                     .HasColumnName("GPRS")
@@ -119,6 +154,8 @@ namespace GsmRanking.Models
                     .HasColumnName("GPS")
                     .HasDefaultValueSql("1");
 
+                entity.Property(e => e.HotSpotWifi).HasDefaultValueSql("1");
+
                 entity.Property(e => e.Hsdpa)
                     .HasColumnName("HSDPA")
                     .HasDefaultValueSql("1");
@@ -127,13 +164,7 @@ namespace GsmRanking.Models
                     .HasColumnName("HSDPAPlus")
                     .HasDefaultValueSql("1");
 
-                entity.Property(e => e.Hswifi)
-                    .HasColumnName("HSWIFI")
-                    .HasDefaultValueSql("1");
-
-                entity.Property(e => e.Inducharge)
-                    .HasColumnName("INDUCHARGE")
-                    .HasDefaultValueSql("0");
+                entity.Property(e => e.InduCharge).HasDefaultValueSql("0");
 
                 entity.Property(e => e.Ip68)
                     .HasColumnName("IP68")
@@ -143,9 +174,7 @@ namespace GsmRanking.Models
                     .HasColumnName("IRDA")
                     .HasDefaultValueSql("0");
 
-                entity.Property(e => e.Kind)
-                    .HasColumnName("KIND")
-                    .HasColumnType("varchar(20)");
+                entity.Property(e => e.Kind).HasColumnType("varchar(20)");
 
                 entity.Property(e => e.Lte)
                     .HasColumnName("LTE")
@@ -155,112 +184,71 @@ namespace GsmRanking.Models
 
                 entity.Property(e => e.Lteup).HasColumnName("LTEUP");
 
-                entity.Property(e => e.Memory).HasColumnName("MEMORY");
-
-                entity.Property(e => e.Model)
-                    .HasColumnName("MODEL")
-                    .HasColumnType("varchar(20)");
+                entity.Property(e => e.Model).HasColumnType("varchar(20)");
 
                 entity.Property(e => e.Nfc)
                     .HasColumnName("NFC")
                     .HasDefaultValueSql("1");
 
-                entity.Property(e => e.Oswork)
-                    .HasColumnName("OSWORK")
-                    .HasColumnType("varchar(20)");
+                entity.Property(e => e.OsWork).HasColumnType("varchar(20)");
 
-                entity.Property(e => e.Premierdate)
-                    .HasColumnName("PREMIERDATE")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.PremierDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Producerid).HasColumnName("PRODUCERID");
+                entity.Property(e => e.RearCamera).HasColumnType("varchar(100)");
 
-                entity.Property(e => e.Rearcamera)
-                    .HasColumnName("REARCAMERA")
-                    .HasColumnType("varchar(100)");
+                entity.Property(e => e.Screen).HasColumnType("varchar(45)");
 
-                entity.Property(e => e.Screen)
-                    .HasColumnName("SCREEN")
-                    .HasColumnType("varchar(45)");
+                entity.Property(e => e.SdCard).HasDefaultValueSql("0");
 
-                entity.Property(e => e.Sdcard)
-                    .HasColumnName("SDCARD")
-                    .HasDefaultValueSql("0");
+                entity.Property(e => e.SdCardInfo).HasColumnType("varchar(10)");
 
-                entity.Property(e => e.Sdcardinfo)
-                    .HasColumnName("SDCARDINFO")
-                    .HasColumnType("varchar(10)");
-
-                entity.Property(e => e.Touchscreen)
-                    .HasColumnName("TOUCHSCREEN")
-                    .HasDefaultValueSql("1");
+                entity.Property(e => e.TouchScreen).HasDefaultValueSql("1");
 
                 entity.Property(e => e.Wifi)
                     .HasColumnName("WIFI")
                     .HasDefaultValueSql("1");
 
-                entity.Property(e => e.Wifinfo)
-                    .HasColumnName("WIFINFO")
-                    .HasColumnType("varchar(40)");
+                entity.Property(e => e.WifiInfo).HasColumnType("varchar(40)");
 
-                entity.HasOne(d => d.Producer)
+                entity.HasOne(d => d.IdProducerNavigation)
                     .WithMany(p => p.Phones)
-                    .HasForeignKey(d => d.Producerid)
+                    .HasForeignKey(d => d.IdProducer)
                     .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("FK__PHONES__PRODUCER__56E8E7AB");
+                    .HasConstraintName("FK__Phones__IdProduc__7814D14C");
             });
 
             modelBuilder.Entity<Producers>(entity =>
             {
-                entity.HasKey(e => e.Producerid)
-                    .HasName("PK__PRODUCER__8D6D9BD453BBF1F9");
+                entity.HasKey(e => e.IdProducer)
+                    .HasName("PK__Producer__09880C664B2E059D");
 
-                entity.ToTable("PRODUCERS");
-
-                entity.Property(e => e.Producerid).HasColumnName("PRODUCERID");
-
-                entity.Property(e => e.ProducerName)
-                    .HasColumnName("PRODUCER_NAME")
-                    .HasColumnType("varchar(40)");
+                entity.Property(e => e.ProducerName).HasColumnType("varchar(40)");
             });
 
             modelBuilder.Entity<Users>(entity =>
             {
-                entity.HasKey(e => e.Userid)
-                    .HasName("PK__USERS__7B9E7F35D84134F0");
+                entity.HasKey(e => e.IdUser)
+                    .HasName("PK__Users__B7C9263824FAFE10");
 
-                entity.ToTable("USERS");
-
-                entity.Property(e => e.Userid)
-                    .HasColumnName("USERID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.IdUser).ValueGeneratedNever();
 
                 entity.Property(e => e.Email)
                     .IsRequired()
-                    .HasColumnName("EMAIL")
                     .HasColumnType("varchar(60)");
 
-                entity.Property(e => e.Firstname)
-                    .HasColumnName("FIRSTNAME")
-                    .HasColumnType("varchar(40)");
+                entity.Property(e => e.FirstName).HasColumnType("varchar(40)");
 
-                entity.Property(e => e.Isadmin)
-                    .HasColumnName("ISADMIN")
-                    .HasDefaultValueSql("0");
+                entity.Property(e => e.LastName).HasColumnType("varchar(40)");
 
-                entity.Property(e => e.Lastname)
-                    .HasColumnName("LASTNAME")
-                    .HasColumnType("varchar(40)");
+                entity.Property(e => e.UserPassword)
+                    .IsRequired()
+                    .HasColumnType("varchar(25)");
+
+                entity.Property(e => e.UserType).HasDefaultValueSql("0");
 
                 entity.Property(e => e.Username)
                     .IsRequired()
-                    .HasColumnName("USERNAME")
                     .HasColumnType("varchar(40)");
-
-                entity.Property(e => e.Userpass)
-                    .IsRequired()
-                    .HasColumnName("USERPASS")
-                    .HasColumnType("varchar(25)");
             });
         }
     }

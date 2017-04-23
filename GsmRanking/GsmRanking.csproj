@@ -9,6 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Viewmodels\ArticlesMangement\**" />
+    <Compile Remove="Views\ArticlesManagement\**" />
+    <Content Remove="Viewmodels\ArticlesMangement\**" />
+    <Content Remove="Views\ArticlesManagement\**" />
+    <EmbeddedResource Remove="Viewmodels\ArticlesMangement\**" />
+    <EmbeddedResource Remove="Views\ArticlesManagement\**" />
+    <None Remove="Viewmodels\ArticlesMangement\**" />
+    <None Remove="Views\ArticlesManagement\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\lib\bootstrap\css\bootstrap-grid.css" />
     <Content Include="wwwroot\lib\bootstrap\css\bootstrap-grid.css.map" />
     <Content Include="wwwroot\lib\bootstrap\css\bootstrap-grid.min.css" />
@@ -76,8 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\AutomapperProfiles\" />
-    <Folder Include="Viewmodels\ArticlesMangement\" />
-    <Folder Include="Views\ArticlesManagement\" />
   </ItemGroup>
 
 </Project>

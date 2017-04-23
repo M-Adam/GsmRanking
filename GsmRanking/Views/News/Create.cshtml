@@ -1,19 +1,12 @@
 ﻿@model GsmRanking.Viewmodels.News.NewsCreateViewModel
 
 @{
-    Layout = "_Layout";
+    ViewData["Title"] = "Create a news";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>title</title>
-</head>
-<body class="panel-body">
+<div>
     <h3>Create News</h3>
-    <form asp-controller="News" asp-action="Create" method="post" enctype="multipart/form-data">
-        @Html.AntiForgeryToken()
+    <form asp-controller="News" asp-action="Create" method="post" enctype="multipart/form-data" asp-antiforgery="true">
         @Html.ValidationSummary(true)
         <div>
             <span class="text-danger">@Html.ValidationSummary()</span>
@@ -40,7 +33,6 @@
         </div>
       
         <button type="submit" class="btn btn-primary">Add</button>
-        <a asp-action="Index" class="btn btn-default">Cancel</a>
+        <a asp-action="Index" class="btn btn-danger">Cancel</a>
     </form>
-</body>
-</html>
+</div>

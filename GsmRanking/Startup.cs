@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GsmRanking.Common.Authorization;
+using GsmRanking.Common.Enums;
 using GsmRanking.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using GsmRanking.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GsmRanking
 {
@@ -56,7 +59,15 @@ namespace GsmRanking
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPhoneService, PhoneService>();
 
-            services.AddAuthorization();
+            services.AddAuthorization(x =>
+            {
+                x.AddPolicy(Policies.Editor, builder => builder.RequireAssertion(y => 
+                    y.User.IsInRole(UserTypeEnum.Editor.ToString()) || y.User.IsInRole(UserTypeEnum.Admin.ToString()))
+                );
+                x.AddPolicy(Policies.Admin, builder => builder.RequireAssertion(y =>
+                    y.User.IsInRole(UserTypeEnum.Admin.ToString()))
+                );
+            });
             services.AddAutoMapper();
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
         }

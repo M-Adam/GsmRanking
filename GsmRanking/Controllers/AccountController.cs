@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GsmRanking.Common;
+using GsmRanking.Common.Enums;
+using GsmRanking.Models;
 using GsmRanking.Viewmodels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,13 +19,13 @@ namespace GsmRanking.Controllers
     [AllowAnonymous]
     public class AccountController : GsmRankingBaseController
     {
-        //private readonly DbContext _context;
+        private readonly GsmRankingContext _context;
 
-        //public AccountController(DbContext context)
-        //{
-        //    _context = context;
-        //}
-        
+        public AccountController(GsmRankingContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Register()
         {
             var viewModel = new RegisterViewModel();
@@ -40,14 +43,18 @@ namespace GsmRanking.Controllers
 
             try
             {
-
-                //_userService.RegisterUser(viewModel.UserName, viewModel.Email, viewModel.Password);
-                //LogInfo(Events.Account_Register);
+                _context.Users.Add(new Users()
+                {
+                    UserPassword = Hasher.HashPassword(viewModel.Password),
+                    Username = viewModel.UserName,
+                    Email = viewModel.Email,
+                    UserType = (byte) UserTypeEnum.Viewer
+                });
+                _context.SaveChanges();
                 SetSuccess("Rejestracja zakończona sukcesem.");
             }
             catch (Exception e)
             {
-                //LogException(Events.Account_Register, e);
                 SetError(e);
                 return View(viewModel);
             }
@@ -57,7 +64,7 @@ namespace GsmRanking.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel viewModel)
+        public IActionResult Login(LoginViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -66,33 +73,48 @@ namespace GsmRanking.Controllers
 
             try
             {
-                //var user = await _userService.LoginUserAsync(viewModel.Login, viewModel.Password);
-                //var claimsPrincipal = CreateClaims(user);
+                Users user;
+                if (viewModel.Login.Contains("@"))
+                {
+                    user = _context.Users.FirstOrDefault(x => x.Email == viewModel.Login);
+                }
+                else
+                {
+                    user = _context.Users.FirstOrDefault(x => x.Username == viewModel.Login);
+                }
+                if (user == null)
+                {
+                    return BadRequest("Nie znaleziono użytkownika");
+                }
+                if (!Hasher.IsPasswordValid(user.UserPassword, viewModel.Password))
+                {
+                    return BadRequest("Niepoprawne hasło");
+                }
 
-                //await HttpContext
-                //    .Authentication
-                //    .SignInAsync(Startup.AuthenticationScheme, claimsPrincipal,
-                //        new AuthenticationProperties
-                //        {
-                //            IsPersistent = viewModel.RememberMe
-                //        });
+                var claimsPrincipal = CreateClaims(user);
 
-                //LogInfo(Events.Account_Login);
+                HttpContext
+                    .Authentication
+                    .SignInAsync(Startup.AuthenticationScheme, claimsPrincipal,
+                        new AuthenticationProperties
+                        {
+                            IsPersistent = viewModel.RememberMe
+                        })
+                    .Wait();
+
                 SetSuccess("Zalogowałeś się!");
-
                 return Ok();
             }
             catch (Exception e)
             {
-                //LogException(Events.Account_Login, e);
                 SetError(e);
                 return BadRequest(e);
             }
         }
 
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-            await HttpContext.Authentication.SignOutAsync(Startup.AuthenticationScheme);
+            HttpContext.Authentication.SignOutAsync(Startup.AuthenticationScheme).Wait();
             return RedirectToAction("Index", "Home");
         }
 
@@ -111,23 +133,19 @@ namespace GsmRanking.Controllers
             return View();
         }
 
-        //[NonAction]
-        //private ClaimsPrincipal CreateClaims(User user)
-        //{
-        //    var privileges = _userService.GetUserPrivileges(user);
-        //    var roles = user.Roles;
-
-        //    var claims = new List<Claim>
-        //    {
-        //        new Claim(ClaimTypes.Name, user.Username),
-        //        new Claim(ClaimTypes.Email, user.Email, ClaimValueTypes.Email),
-        //        new Claim(nameof(Privilege), privileges.ToString()),
-        //    };
-        //    claims.AddRange(roles.Select(x => x.Role).Select(x => new Claim(ClaimTypes.Role, x.Code)));
-
-        //    var claimsIdentity = new ClaimsIdentity(claims);
-        //    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-        //    return claimsPrincipal;
-        //}
+        [NonAction]
+        private ClaimsPrincipal CreateClaims(Users user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email, ClaimValueTypes.Email),
+                new Claim(ClaimTypes.Role, user.UserType.ToString()),
+            };
+            
+            var claimsIdentity = new ClaimsIdentity(claims);
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            return claimsPrincipal;
+        }
     }
 }
