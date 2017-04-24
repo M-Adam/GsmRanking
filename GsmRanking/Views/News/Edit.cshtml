@@ -1,16 +1,17 @@
-﻿@model GsmRanking.Viewmodels.News.NewsCreateViewModel
+﻿@model GsmRanking.Viewmodels.News.NewsEditViewModel
 
 @{
-    ViewData["Title"] = "Stwórz newsa";
+    ViewData["Title"] = "Edytuj newsa";
 }
 
 <div>
-    <h3>Stwórz newsa</h3>
-    <form asp-controller="News" asp-action="Create" method="post" enctype="multipart/form-data" asp-antiforgery="true">
+    <h3>Edytuj newsa</h3>
+    <form asp-controller="News" asp-action="Edit" method="post" enctype="multipart/form-data" asp-antiforgery="true">
         @Html.ValidationSummary(true)
         <div>
             <span class="text-danger">@Html.ValidationSummary()</span>
         </div>
+        @Html.HiddenFor(m => m.IdNews)
         <div class="form-group">
             @Html.LabelFor(m => m.Title) <br>
             @Html.EditorFor(m => m.Title)
@@ -28,11 +29,14 @@
             @Html.EditorFor(m => m.Content)
         </div>
         <div class="form-group">
+            <img class="card-img-top" src="data:image/jpg;base64,@Model.Image" alt="@Model.Title" style="height: auto; width: 300px; ">
+        </div>
+        <div class="form-group">
             @Html.LabelFor(m => m.ImageUpload) <br>
             @Html.EditorFor(m => m.ImageUpload)
         </div>
       
-        <button type="submit" class="btn btn-primary">Dodaj</button>
+        <button type="submit" class="btn btn-primary">Zapisz</button>
         <a asp-action="Index" class="btn btn-danger">Anuluj</a>
     </form>
 </div>

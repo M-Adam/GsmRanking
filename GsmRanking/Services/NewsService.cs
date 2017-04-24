@@ -1,8 +1,8 @@
 ﻿using GsmRanking.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GsmRanking.Services
 {
@@ -17,7 +17,13 @@ namespace GsmRanking.Services
 
         public void AddNews(News news)
         {
+            news.CreateDate = DateTime.Now;
             _context.Add(news);
+            _context.SaveChanges();
+        }
+
+        public void EditNews(News updatedNews)
+        {
             _context.SaveChanges();
         }
 
@@ -30,6 +36,11 @@ namespace GsmRanking.Services
         {
             return _context.News.SingleOrDefault(n => n.IdNews == id);
         }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
     }
 
     public interface INewsService
@@ -37,5 +48,7 @@ namespace GsmRanking.Services
         List<News> GetAllNews();
         News GetNewsById(int id);
         void AddNews(News news);
+        void EditNews(News news);
+        void SaveChanges();
     }
 }

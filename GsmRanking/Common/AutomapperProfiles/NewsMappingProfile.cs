@@ -14,6 +14,10 @@ namespace GsmRanking.Common.AutomapperProfiles
         {
             CreateMap<News, NewsCreateViewModel>();
             CreateMap<NewsCreateViewModel, News>();
+
+            CreateMap<News, NewsEditViewModel>();
+            CreateMap<NewsEditViewModel, News>().ForMember(m => m.CreateDate, opt => opt.Ignore())
+                                                .ForMember(m=>m.Image, opt => opt.Ignore());
         }
     }
 }

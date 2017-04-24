@@ -5,7 +5,7 @@
     Layout = "_Layout";
 }
 
-<h1>All news</h1>
+<h1>Wszystkie newsy</h1>
 @*TODO: Show only for admin*@
 <a class="btn btn-success pull-right" asp-controller="News" asp-action="Create">Create news</a>
 <div class="row">
@@ -23,8 +23,14 @@
                     </div>
                     <div class="panel">
                         <div class="panel-body">
+                            <img class="card-img-top" src="data:image/jpg;base64,@Model[i].Image" alt="@Model[i].Title" style="height: auto; width: 300px; ">
                             <p>@Model[i].ShortText</p>
                             <a class="btn btn-primary btn-sm" asp-controller="News" asp-action="Details" asp-route-id="@Model[i].IdNews">Read more</a>
+                            <a class="btn btn-warning btn-sm" asp-controller="News" asp-action="Edit" asp-route-id="@Model[i].IdNews">Edit</a>
+                            @if (i < Model.Count() - 1)
+                            {
+                                <hr />
+                            }
                         </div>
                     </div>
                 </div>

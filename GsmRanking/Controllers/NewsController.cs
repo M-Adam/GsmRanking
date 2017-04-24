@@ -67,7 +67,6 @@ namespace GsmRanking.Controllers
                             }
                         }
                         news.Image = Convert.ToBase64String(memoryStream.ToArray());
-                        news.CreateDate = DateTime.Now;
                     }
                 }
                 _newsService.AddNews(news);
@@ -80,10 +79,60 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
         public IActionResult Create()
         {
             return View();
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if(!id.HasValue)
+            {
+                SetError("Id newsa do edycji nie może być puste");
+            }
+            var news = _newsService.GetNewsById(id.Value);
+            if(news == null)
+            {
+                SetError($"Nie znaleziono newsa o id: {id}");
+                return View("Index");
+            }
+            var newsViewModel = _mapper.Map<News, NewsEditViewModel>(news);
+            return View(newsViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(NewsEditViewModel n)
+        {
+            try
+            {
+                var existingNews = _newsService.GetNewsById(n.IdNews);
+                Mapper.Map(n, existingNews);
+                
+                using (var memoryStream = new MemoryStream())
+                {
+                    if (n.ImageUpload != null)
+                    {
+                        await n.ImageUpload.CopyToAsync(memoryStream);
+                        using (var image = new Bitmap(Image.FromStream(memoryStream)))
+                        {
+                            if (!ValidateImageSize(image))
+                            {
+                                return View(n);
+                            }
+                        }
+                        existingNews.Image = Convert.ToBase64String(memoryStream.ToArray());
+                    }
+                }
+                
+                _newsService.SaveChanges();
+                SetSuccess($"Pomyślnie edytowano news '{n.Title}'");
+            }
+            catch (Exception ex)
+            {
+                SetError(ex);
+            }
+            return RedirectToAction("Index");
         }
 
         private bool ValidateImageSize(Bitmap image)

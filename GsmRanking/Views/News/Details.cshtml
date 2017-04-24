@@ -5,7 +5,12 @@
     Layout = "_Layout";
 }
 
-<h1>News @Model.IdNews</h1>
-<p>@Model.Content</p>
+<h1>@Model.Title</h1>
+<img class="card-img-top" src="data:image/jpg;base64,@Model.Image" alt="@Model.Title" style="height: auto; width: 300px; ">
+<p>@Model.ShortText</p>
+<br />
+<div>
+    <p>@Model.Content</p>
+</div>
 
 

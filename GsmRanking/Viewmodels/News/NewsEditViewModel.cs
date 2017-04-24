@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace GsmRanking.Viewmodels.News
 {
-    public class NewsCreateViewModel
+    public class NewsEditViewModel
     {
+        public int IdNews { get; set; }
         public string Title { get; set; }
         public string Shorttext { get; set; }
         [DataType(DataType.MultilineText)]
