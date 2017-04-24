@@ -3,15 +3,16 @@
 
 @{
     Layout = "_Layout";
+    ViewData["Title"] = "Wszystkie newsy";
 }
 
 <h1>Wszystkie newsy</h1>
 @*TODO: Show only for admin*@
-<a class="btn btn-success pull-right" asp-controller="News" asp-action="Create">Create news</a>
+<a class="btn btn-success pull-right" asp-controller="News" asp-action="Create">Stwórz newsa</a>
 <div class="row">
     <div class="container">
         <div class="panel-group" id="accordion">
-            @for (int i = 0; i < Model.Count(); i++)
+            @for (int i = Model.Count()-1; i >= 0; i--)
             {
                 <div class="panel panel-default" style="margin-top:10px;">
                     <div class="panel-heading">
@@ -20,14 +21,16 @@
                                 @Model[i].Title
                             </a>
                         </h3>
+                        <small>@Model[i].CreateDate</small>
                     </div>
                     <div class="panel">
                         <div class="panel-body">
                             <img class="card-img-top" src="data:image/jpg;base64,@Model[i].Image" alt="@Model[i].Title" style="height: auto; width: 300px; ">
                             <p>@Model[i].ShortText</p>
-                            <a class="btn btn-primary btn-sm" asp-controller="News" asp-action="Details" asp-route-id="@Model[i].IdNews">Read more</a>
-                            <a class="btn btn-warning btn-sm" asp-controller="News" asp-action="Edit" asp-route-id="@Model[i].IdNews">Edit</a>
-                            @if (i < Model.Count() - 1)
+                            <a class="btn btn-primary btn-sm" asp-controller="News" asp-action="Details" asp-route-id="@Model[i].IdNews">Szczegóły</a>
+                            <a class="btn btn-warning btn-sm" asp-controller="News" asp-action="Edit" asp-route-id="@Model[i].IdNews">Edytuj</a>
+                            <a class="btn btn-danger btn-sm" asp-controller="News" asp-action="Delete" asp-route-id="@Model[i].IdNews">Usuń</a>
+                            @if (i != 0)
                             {
                                 <hr />
                             }

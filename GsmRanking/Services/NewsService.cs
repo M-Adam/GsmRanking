@@ -22,6 +22,12 @@ namespace GsmRanking.Services
             _context.SaveChanges();
         }
 
+        public void DeleteNews(News news)
+        {
+            _context.Remove(news);
+            _context.SaveChanges();
+        }
+
         public void EditNews(News updatedNews)
         {
             _context.SaveChanges();
@@ -49,6 +55,7 @@ namespace GsmRanking.Services
         News GetNewsById(int id);
         void AddNews(News news);
         void EditNews(News news);
+        void DeleteNews(News news);
         void SaveChanges();
     }
 }

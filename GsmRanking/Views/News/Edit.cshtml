@@ -4,9 +4,11 @@
     ViewData["Title"] = "Edytuj newsa";
 }
 
+<script src="http://cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
+
 <div>
     <h3>Edytuj newsa</h3>
-    <form asp-controller="News" asp-action="Edit" method="post" enctype="multipart/form-data" asp-antiforgery="true">
+    <form asp-controller="News" asp-action="Edit" method="post" enctype="multipart/form-data" asp-antiforgery="true" >
         @Html.ValidationSummary(true)
         <div>
             <span class="text-danger">@Html.ValidationSummary()</span>
@@ -14,29 +16,32 @@
         @Html.HiddenFor(m => m.IdNews)
         <div class="form-group">
             @Html.LabelFor(m => m.Title) <br>
-            @Html.EditorFor(m => m.Title)
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Ispublished)
-            @Html.EditorFor(m => m.Ispublished)
+            @Html.TextBoxFor(m => m.Ispublished, new { type = "checkbox" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Shorttext) <br>
-            @Html.EditorFor(m => m.Shorttext)
+            @Html.TextAreaFor(m => m.Shorttext, new { @class = "form-control", rows = 3 })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Content) <br>
-            @Html.EditorFor(m => m.Content)
+            @Html.TextAreaFor(m => m.Content, new { @class = "form-control", id = "contentEditor" })
         </div>
-        <div class="form-group">
-            <img class="card-img-top" src="data:image/jpg;base64,@Model.Image" alt="@Model.Title" style="height: auto; width: 300px; ">
-        </div>
+        
         <div class="form-group">
             @Html.LabelFor(m => m.ImageUpload) <br>
-            @Html.EditorFor(m => m.ImageUpload)
+            <div class="form-group">
+                <img class="card-img-top" src="data:image/jpg;base64,@Model.Image" alt="@Model.Title" style="height: auto; width: 300px; ">
+            </div>
+            @Html.TextBoxFor(m => m.ImageUpload, new { type = "file", @class = "form-control-file" })
         </div>
       
         <button type="submit" class="btn btn-primary">Zapisz</button>
         <a asp-action="Index" class="btn btn-danger">Anuluj</a>
+
+        <script>CKEDITOR.replace('contentEditor');</script>
     </form>
 </div>

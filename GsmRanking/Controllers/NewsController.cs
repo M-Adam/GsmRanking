@@ -89,12 +89,13 @@ namespace GsmRanking.Controllers
             if(!id.HasValue)
             {
                 SetError("Id newsa do edycji nie może być puste");
+                return RedirectToAction("Index");
             }
             var news = _newsService.GetNewsById(id.Value);
             if(news == null)
             {
                 SetError($"Nie znaleziono newsa o id: {id}");
-                return View("Index");
+                return RedirectToAction("Index");
             }
             var newsViewModel = _mapper.Map<News, NewsEditViewModel>(news);
             return View(newsViewModel);
@@ -127,6 +128,31 @@ namespace GsmRanking.Controllers
                 
                 _newsService.SaveChanges();
                 SetSuccess($"Pomyślnie edytowano news '{n.Title}'");
+            }
+            catch (Exception ex)
+            {
+                SetError(ex);
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            try
+            {
+                if (!id.HasValue)
+                {
+                    SetError("Id newsa do usunięcia nie może być puste");
+                    return RedirectToAction("Index");
+                }
+                var news = _newsService.GetNewsById(id.Value);
+                if (news == null)
+                {
+                    SetError($"Nie znaleziono newsa o id: {id}");
+                    return RedirectToAction("Index");
+                }
+                _newsService.DeleteNews(news);
+                SetSuccess("News został usunięty");
             }
             catch (Exception ex)
             {

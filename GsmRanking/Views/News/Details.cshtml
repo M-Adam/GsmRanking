@@ -3,6 +3,7 @@
 
 @{
     Layout = "_Layout";
+    ViewData["Title"] = @Model.Title;
 }
 
 <h1>@Model.Title</h1>
@@ -10,7 +11,7 @@
 <p>@Model.ShortText</p>
 <br />
 <div>
-    <p>@Model.Content</p>
+    <p>@Html.Raw(@Model.Content)</p>
 </div>
 
 
