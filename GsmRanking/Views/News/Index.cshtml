@@ -21,24 +21,27 @@
                                 @Model[i].Title
                             </a>
                         </h3>
-                        <small>@Model[i].CreateDate</small>
+                        <small>Utworzono @Model[i].CreateDate</small>
                     </div>
                     <div class="panel">
                         <div class="panel-body">
-                            <img class="card-img-top" src="data:image/jpg;base64,@Model[i].Image" alt="@Model[i].Title" style="height: auto; width: 300px; ">
+                            <img class="card-img-top" src="data:image/jpg;base64,@Model[i].Image" alt="@Model[i].Title" style="height: auto; padding-top: 1em; width: 300px; ">
                             <p>@Model[i].ShortText</p>
-                            <a class="btn btn-primary btn-sm" asp-controller="News" asp-action="Details" asp-route-id="@Model[i].IdNews">Szczegóły</a>
-                            @if (!Model[i].IsPublished)
-                            {
-                                <a class="btn btn-success btn-sm" asp-controller="News" asp-action="Publish" asp-route-id="@Model[i].IdNews" asp-route-publish="true">Opublikuj</a>
-                            }
-                            else
-                            {
-                                <a class="btn btn-secondary btn-sm" asp-controller="News" asp-action="Publish" asp-route-id="@Model[i].IdNews" asp-route-publish="false">Ukryj</a>
-                            }
 
-                            <a class="btn btn-warning btn-sm" asp-controller="News" asp-action="Edit" asp-route-id="@Model[i].IdNews">Edytuj</a>
-                            <a class="btn btn-danger btn-sm" asp-controller="News" asp-action="Delete" asp-route-id="@Model[i].IdNews">Usuń</a>
+                            <div id="buttons-panel">
+                                <a class="btn btn-primary btn-sm" asp-controller="News" asp-action="Details" asp-route-id="@Model[i].IdNews">Szczegóły</a>
+                                @if (!Model[i].IsPublished)
+                                {
+                                    <a class="btn btn-success btn-sm" asp-controller="News" asp-action="Publish" asp-route-id="@Model[i].IdNews" asp-route-publish="true">Opublikuj</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-secondary btn-sm" asp-controller="News" asp-action="Publish" asp-route-id="@Model[i].IdNews" asp-route-publish="false">Ukryj</a>
+                                }
+
+                                <a class="btn btn-warning btn-sm" asp-controller="News" asp-action="Edit" asp-route-id="@Model[i].IdNews">Edytuj</a>
+                                <a class="btn btn-danger btn-sm" asp-controller="News" asp-action="Delete" asp-route-id="@Model[i].IdNews">Usuń</a>
+                            </div>
                             @if (i != 0)
                             {
                                 <hr />
