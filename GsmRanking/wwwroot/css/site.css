@@ -13,7 +13,7 @@
 input,
 select,
 textarea {
-    max-width: 600px;
+    max-width: 280px;
 }
 
 /* Carousel */
@@ -33,4 +33,10 @@ textarea {
     .carousel-caption {
         display: none;
     }
+}
+
+#news-form input,
+select,
+textarea {
+    max-width: inherit;
 }

@@ -161,6 +161,37 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Publish(int? id, bool publish)
+        {
+            if(!id.HasValue)
+            {
+                SetError("Id newsa do opublikowania nie może być puste");
+                return View("Index");
+            }
+            var news = _newsService.GetNewsById(id.Value);
+            if (news == null)
+            {
+                SetError($"Nie znaleziono newsa o id: {id}");
+                return RedirectToAction("Index");
+            }
+            if (news.IsPublished == publish)
+            {
+                return View("Index");
+            }
+
+            news.IsPublished = publish;
+            if(publish)
+            {
+                SetSuccess($"Opublikowano newsa '{news.Title}'");
+            }
+            else
+            {
+                SetSuccess($"Ukryto newsa '{news.Title}'");
+            }
+            _newsService.EditNews(news);
+            return RedirectToAction("Index");
+        }
+
         private bool ValidateImageSize(Bitmap image)
         {
             bool isValid = true;

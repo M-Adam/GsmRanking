@@ -33,8 +33,12 @@ namespace GsmRanking.Services
             _context.SaveChanges();
         }
 
-        public List<News> GetAllNews()
+        public List<News> GetAllNews(bool publishedOnly = false)
         {
+            if(publishedOnly)
+            {
+                return _context.News.Where(n => n.IsPublished).ToList();
+            }
             return _context.News.ToList();
         }
 
@@ -51,7 +55,7 @@ namespace GsmRanking.Services
 
     public interface INewsService
     {
-        List<News> GetAllNews();
+        List<News> GetAllNews(bool publishedOnly = false);
         News GetNewsById(int id);
         void AddNews(News news);
         void EditNews(News news);
