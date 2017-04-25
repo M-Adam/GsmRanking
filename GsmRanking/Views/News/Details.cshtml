@@ -7,8 +7,17 @@
 }
 
 <h1>@Model.Title</h1>
-<img class="card-img-top" src="data:image/jpg;base64,@Model.Image" alt="@Model.Title" style="height: auto; width: 300px; ">
+<small>Data utworzenia: @Model.CreateDate | </small>
+@if (Model.IsPublished)
+{
+    <small>Data publikacji: @Model.PublishDate | </small>
+}
+<small>Wyświetlenia: @Model.ViewsCount</small>
 <p>@Model.ShortText</p>
+<div id="news-image">
+    <img class="card-img-top" src="data:image/jpg;base64,@Model.Image" alt="@Model.Title" style="height: auto; width: 300px; ">
+</div>
+
 <br />
 <div>
     <p>@Html.Raw(@Model.Content)</p>

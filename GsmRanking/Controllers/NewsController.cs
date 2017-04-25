@@ -42,7 +42,8 @@ namespace GsmRanking.Controllers
                 SetError($"News with id '{id}' not found.");
                 return RedirectToAction("Index");
             }
-
+            news.ViewsCount++;
+            _newsService.EditNews(news);
             return View(news);
         }
 
@@ -182,6 +183,7 @@ namespace GsmRanking.Controllers
             news.IsPublished = publish;
             if(publish)
             {
+                news.PublishDate = DateTime.Now;
                 SetSuccess($"Opublikowano newsa '{news.Title}'");
             }
             else
