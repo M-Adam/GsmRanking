@@ -22,9 +22,6 @@ namespace GsmRanking.Viewmodels.News
         [Display(Name = "Treść")]
         public string Content { get; set; }
 
-        [Display(Name = "Opublikowany?")]
-        public bool Ispublished { get; set; }
-
         [Display(Name = "Zdjęcie newsa")]
         public IFormFile ImageUpload { get; set; }
 

@@ -6,7 +6,7 @@
 
 <script src="http://cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
 
-<div id="news-form">
+<div id="news-form" style="visibility: hidden;">
     <h3>Edytuj newsa</h3>
     <form asp-controller="News" asp-action="Edit" method="post" enctype="multipart/form-data" asp-antiforgery="true">
         @Html.ValidationSummary(true)
@@ -38,6 +38,11 @@
         <button type="submit" class="btn btn-primary">Zapisz</button>
         <a asp-action="Index" class="btn btn-danger">Anuluj</a>
 
-        <script>CKEDITOR.replace('contentEditor');</script>
+        <script>
+            CKEDITOR.replace('contentEditor');
+            CKEDITOR.on("instanceReady", function () {
+                document.getElementById('news-form').style.visibility = 'visible';
+            });
+        </script>
     </form>
 </div>
