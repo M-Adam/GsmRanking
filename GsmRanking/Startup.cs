@@ -68,7 +68,16 @@ namespace GsmRanking
                     y.User.IsInRole(UserTypeEnum.Admin.ToString()))
                 );
             });
+            services.AddDistributedMemoryCache();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.CookieHttpOnly = true;
+            });
             services.AddAutoMapper();
+            services.AddAntiforgery();
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
         }
 
@@ -88,6 +97,7 @@ namespace GsmRanking
             }
 
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {

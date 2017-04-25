@@ -8,7 +8,6 @@
 <div id="news-form" style="visibility: hidden;">
     <h3>Stwórz newsa</h3>
     <form asp-controller="News" asp-action="Create" method="post" enctype="multipart/form-data" asp-antiforgery="true">
-        @Html.ValidationSummary(true)
         <div>
             <span class="text-danger">@Html.ValidationSummary()</span>
         </div>

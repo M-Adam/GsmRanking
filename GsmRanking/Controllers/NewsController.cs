@@ -36,41 +36,53 @@ namespace GsmRanking.Controllers
             return View(news);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var news = _newsService.GetNewsById(id);
-            if(news == null)
+            var news = await _newsService.GetNewsById(id);
+            if (news == null)
             {
                 SetError($"News with id '{id}' not found.");
                 return RedirectToAction("Index");
             }
             news.ViewsCount++;
-            _newsService.EditNews(news);
+            _newsService.SaveChanges();
             return View(news);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PreventDuplicateRequest]
         public async Task<IActionResult> Create(NewsCreateViewModel model)
         {
-            var news = _mapper.Map<NewsCreateViewModel, News>(model);
-
-            if (model.ImageUpload != null)
+            if(!ModelState.IsValid)
             {
-                string imageString = await GetImageBase64FromFile(model.ImageUpload);
-                if (!String.IsNullOrEmpty(imageString))
-                {
-                    news.Image = imageString;
-                }
-                else
-                {
-                    return View(model);
-                }
+                return View(model);
             }
 
-            _newsService.AddNews(news);
-            SetSuccess($"Pomyślnie utworzono news '{model.Title}'");
+            try
+            {
+                var news = _mapper.Map<NewsCreateViewModel, News>(model);
 
+                if (model.ImageUpload != null)
+                {
+                    string imageString = await GetImageBase64FromFile(model.ImageUpload);
+                    if (!String.IsNullOrEmpty(imageString))
+                    {
+                        news.Image = imageString;
+                    }
+                    else
+                    {
+                        return View(model);
+                    }
+                }
+
+                _newsService.AddNews(news);
+                SetSuccess($"Pomyślnie utworzono news '{model.Title}'");
+            }
+            catch (Exception ex)
+            {
+                SetError(ex);
+            }
             return RedirectToAction("Index");
         }
 
@@ -79,14 +91,9 @@ namespace GsmRanking.Controllers
             return View();
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if(!id.HasValue)
-            {
-                SetError("Id newsa do edycji nie może być puste");
-                return RedirectToAction("Index");
-            }
-            var news = _newsService.GetNewsById(id.Value);
+            var news = await _newsService.GetNewsById(id);
             if(news == null)
             {
                 SetError($"Nie znaleziono newsa o id: {id}");
@@ -98,11 +105,16 @@ namespace GsmRanking.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PreventDuplicateRequest]
         public async Task<IActionResult> Edit(NewsEditViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             try
             {
-                var existingNews = _newsService.GetNewsById(model.IdNews);
+                var existingNews = await _newsService.GetNewsById(model.IdNews);
                 Mapper.Map(model, existingNews);
 
                 if (model.ImageUpload != null)
@@ -117,7 +129,7 @@ namespace GsmRanking.Controllers
                         return View(model);
                     }
                 }
-                _newsService.EditNews(existingNews);
+                _newsService.SaveChanges();
                 SetSuccess($"Pomyślnie edytowano news '{model.Title}'");
             }
             catch (Exception ex)
@@ -127,9 +139,9 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var news = _newsService.GetNewsById(id);
+            var news = await _newsService.GetNewsById(id);
             if (news == null)
             {
                 SetError($"Nie znaleziono newsa o id: {id}");
@@ -141,35 +153,29 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Publish(int? id, bool publish)
+        public async Task<IActionResult> Publish(int id, bool publish)
         {
-            if(!id.HasValue)
-            {
-                SetError("Id newsa do opublikowania nie może być puste");
-                return View("Index");
-            }
-            var news = _newsService.GetNewsById(id.Value);
+            var news = await _newsService.GetNewsById(id);
             if (news == null)
             {
                 SetError($"Nie znaleziono newsa o id: {id}");
                 return RedirectToAction("Index");
             }
-            if (news.IsPublished == publish)
+            if (news.IsPublished != publish)
             {
-                return View("Index");
+                news.IsPublished = publish;
+                if (publish)
+                {
+                    news.PublishDate = DateTime.Now;
+                    SetSuccess($"Opublikowano newsa '{news.Title}'");
+                }
+                else
+                {
+                    SetSuccess($"Ukryto newsa '{news.Title}'");
+                }
+                _newsService.SaveChanges();
             }
 
-            news.IsPublished = publish;
-            if(publish)
-            {
-                news.PublishDate = DateTime.Now;
-                SetSuccess($"Opublikowano newsa '{news.Title}'");
-            }
-            else
-            {
-                SetSuccess($"Ukryto newsa '{news.Title}'");
-            }
-            _newsService.EditNews(news);
             return RedirectToAction("Index");
         }
 

@@ -20,32 +20,33 @@ namespace GsmRanking.Services
         {
             news.CreateDate = DateTime.Now;
             _context.Add(news);
-            _context.SaveChanges();
+            SaveChanges();
         }
 
         public void DeleteNews(News news)
         {
             _context.Remove(news);
-            _context.SaveChanges();
-        }
-
-        public void EditNews(News updatedNews)
-        {
-            _context.SaveChanges();
+            SaveChanges();
         }
 
         public async Task<List<News>> GetAllNews(bool publishedOnly = false)
         {
+            IQueryable<News> news;
             if(publishedOnly)
             {
-                return await _context.News.Where(n => n.IsPublished).ToListAsync();
+                news = _context.News.Where(n => n.IsPublished);
             }
-            return await _context.News.ToListAsync();
+            else
+            {
+                news = _context.News;
+            }
+
+            return await news.ToListAsync();
         }
 
-        public News GetNewsById(int id)
+        public async Task<News> GetNewsById(int id)
         {
-            return _context.News.SingleOrDefault(n => n.IdNews == id);
+            return await _context.News.SingleOrDefaultAsync(n => n.IdNews == id);
         }
 
         public void SaveChanges()
@@ -57,9 +58,8 @@ namespace GsmRanking.Services
     public interface INewsService
     {
         Task<List<News>> GetAllNews(bool publishedOnly = false);
-        News GetNewsById(int id);
+        Task<News> GetNewsById(int id);
         void AddNews(News news);
-        void EditNews(News news);
         void DeleteNews(News news);
         void SaveChanges();
     }
