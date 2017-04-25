@@ -55,9 +55,9 @@ namespace GsmRanking
             services.AddDbContext<GsmRankingContext>(options => options.UseSqlServer(connection));
 
             //Dependency injection mapping
-            services.AddSingleton<INewsService, NewsService>();
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IPhoneService, PhoneService>();
+            services.AddScoped<INewsService, NewsService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPhoneService, PhoneService>();
 
             services.AddAuthorization(x =>
             {

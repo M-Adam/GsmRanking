@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GsmRanking.Services
 {
@@ -33,13 +34,13 @@ namespace GsmRanking.Services
             _context.SaveChanges();
         }
 
-        public List<News> GetAllNews(bool publishedOnly = false)
+        public async Task<List<News>> GetAllNews(bool publishedOnly = false)
         {
             if(publishedOnly)
             {
-                return _context.News.Where(n => n.IsPublished).ToList();
+                return await _context.News.Where(n => n.IsPublished).ToListAsync();
             }
-            return _context.News.ToList();
+            return await _context.News.ToListAsync();
         }
 
         public News GetNewsById(int id)
@@ -55,7 +56,7 @@ namespace GsmRanking.Services
 
     public interface INewsService
     {
-        List<News> GetAllNews(bool publishedOnly = false);
+        Task<List<News>> GetAllNews(bool publishedOnly = false);
         News GetNewsById(int id);
         void AddNews(News news);
         void EditNews(News news);

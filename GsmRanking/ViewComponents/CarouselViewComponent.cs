@@ -20,7 +20,7 @@ namespace GsmRanking.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            IEnumerable<News> allNews = _newsService.GetAllNews(true);
+            IEnumerable<News> allNews = await _newsService.GetAllNews(true);
             List<NewsSlideViewModel> model = new List<NewsSlideViewModel>();
             foreach (var news in allNews)
             {

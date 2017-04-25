@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace GsmRanking.Controllers
 {
@@ -29,9 +30,10 @@ namespace GsmRanking.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_newsService.GetAllNews());
+            var news = await _newsService.GetAllNews();
+            return View(news);
         }
 
         public IActionResult Details(int id)
@@ -49,34 +51,26 @@ namespace GsmRanking.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(NewsCreateViewModel n)
+        public async Task<IActionResult> Create(NewsCreateViewModel model)
         {
-            try
+            var news = _mapper.Map<NewsCreateViewModel, News>(model);
+
+            if (model.ImageUpload != null)
             {
-                var news = _mapper.Map<NewsCreateViewModel, News>(n);
-                
-                using (var memoryStream = new MemoryStream())
+                string imageString = await GetImageBase64FromFile(model.ImageUpload);
+                if (!String.IsNullOrEmpty(imageString))
                 {
-                    if(n.ImageUpload != null)
-                    {
-                        await n.ImageUpload.CopyToAsync(memoryStream);
-                        using (var image = new Bitmap(Image.FromStream(memoryStream)))
-                        {
-                            if(!ValidateImageSize(image))
-                            {
-                                return View(n);
-                            }
-                        }
-                        news.Image = Convert.ToBase64String(memoryStream.ToArray());
-                    }
+                    news.Image = imageString;
                 }
-                _newsService.AddNews(news);
-                SetSuccess($"Pomyślnie utworzono news '{n.Title}'");
+                else
+                {
+                    return View(model);
+                }
             }
-            catch (Exception ex)
-            {
-                SetError(ex);
-            }
+
+            _newsService.AddNews(news);
+            SetSuccess($"Pomyślnie utworzono news '{model.Title}'");
+
             return RedirectToAction("Index");
         }
 
@@ -104,31 +98,27 @@ namespace GsmRanking.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(NewsEditViewModel n)
+        public async Task<IActionResult> Edit(NewsEditViewModel model)
         {
             try
             {
-                var existingNews = _newsService.GetNewsById(n.IdNews);
-                Mapper.Map(n, existingNews);
-                
-                using (var memoryStream = new MemoryStream())
+                var existingNews = _newsService.GetNewsById(model.IdNews);
+                Mapper.Map(model, existingNews);
+
+                if (model.ImageUpload != null)
                 {
-                    if (n.ImageUpload != null)
+                    string imageString = await GetImageBase64FromFile(model.ImageUpload);
+                    if (!String.IsNullOrEmpty(imageString))
                     {
-                        await n.ImageUpload.CopyToAsync(memoryStream);
-                        using (var image = new Bitmap(Image.FromStream(memoryStream)))
-                        {
-                            if (!ValidateImageSize(image))
-                            {
-                                return View(n);
-                            }
-                        }
-                        existingNews.Image = Convert.ToBase64String(memoryStream.ToArray());
+                        existingNews.Image = imageString;
+                    }
+                    else
+                    {
+                        return View(model);
                     }
                 }
-                
-                _newsService.SaveChanges();
-                SetSuccess($"Pomyślnie edytowano news '{n.Title}'");
+                _newsService.EditNews(existingNews);
+                SetSuccess($"Pomyślnie edytowano news '{model.Title}'");
             }
             catch (Exception ex)
             {
@@ -137,28 +127,17 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            try
+            var news = _newsService.GetNewsById(id);
+            if (news == null)
             {
-                if (!id.HasValue)
-                {
-                    SetError("Id newsa do usunięcia nie może być puste");
-                    return RedirectToAction("Index");
-                }
-                var news = _newsService.GetNewsById(id.Value);
-                if (news == null)
-                {
-                    SetError($"Nie znaleziono newsa o id: {id}");
-                    return RedirectToAction("Index");
-                }
-                _newsService.DeleteNews(news);
-                SetSuccess("News został usunięty");
+                SetError($"Nie znaleziono newsa o id: {id}");
+                return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                SetError(ex);
-            }
+            _newsService.DeleteNews(news);
+            SetSuccess("News został usunięty");
+
             return RedirectToAction("Index");
         }
 
@@ -194,27 +173,48 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index");
         }
 
-        private bool ValidateImageSize(Bitmap image)
+        private async Task<string> GetImageBase64FromFile(IFormFile imageUpload)
+        {
+            string output = string.Empty;
+            if (imageUpload != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imageUpload.CopyToAsync(memoryStream);
+                    using (var image = new Bitmap(Image.FromStream(memoryStream)))
+                    {
+                        bool isValid = ValidateUploadedImageSize(image.Width, image.Height, "ImageUpload");
+                        if (isValid)
+                        {
+                            output = Convert.ToBase64String(memoryStream.ToArray());
+                        }
+                    }
+                }
+            }
+            return output;
+        }
+
+        private bool ValidateUploadedImageSize(int width, int height, string validationErrorKey)
         {
             bool isValid = true;
-            if (image.Width > ImageMaxWidth)
+            if (width > ImageMaxWidth)
             {
-                ModelState.AddModelError("ImageUpload", $"Szerokość obrazka przekracza {ImageMaxWidth}px");
+                ModelState.AddModelError(validationErrorKey, $"Szerokość obrazka przekracza {ImageMaxWidth}px");
                 isValid = false;
             }
-            if (image.Width < ImageMinWidth)
+            if (width < ImageMinWidth)
             {
-                ModelState.AddModelError("ImageUpload", $"Szerokość obrazka musi być większa niż {ImageMinWidth}px");
+                ModelState.AddModelError(validationErrorKey, $"Szerokość obrazka musi być większa niż {ImageMinWidth}px");
                 isValid = false;
             }
-            if (image.Height > ImageMaxHeight)
+            if (height > ImageMaxHeight)
             {
-                ModelState.AddModelError("ImageUpload", $"Wysokość obrazka przekracza {ImageMaxHeight}px");
+                ModelState.AddModelError(validationErrorKey, $"Wysokość obrazka przekracza {ImageMaxHeight}px");
                 isValid = false;
             }
-            if (image.Height < ImageMinHeight)
+            if (height < ImageMinHeight)
             {
-                ModelState.AddModelError("ImageUpload", $"Wysokość obrazka musi być większa niż {ImageMinHeight}px");
+                ModelState.AddModelError(validationErrorKey, $"Wysokość obrazka musi być większa niż {ImageMinHeight}px");
                 isValid = false;
             }
             return isValid;
