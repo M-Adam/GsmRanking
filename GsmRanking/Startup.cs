@@ -55,9 +55,9 @@ namespace GsmRanking
             services.AddDbContext<GsmRankingContext>(options => options.UseSqlServer(connection));
 
             //Dependency injection mapping
-            services.AddSingleton<INewsService, NewsService>();
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IPhoneService, PhoneService>();
+            services.AddScoped<INewsService, NewsService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPhoneService, PhoneService>();
 
             services.AddAuthorization(x =>
             {
@@ -68,7 +68,16 @@ namespace GsmRanking
                     y.User.IsInRole(UserTypeEnum.Admin.ToString()))
                 );
             });
+            services.AddDistributedMemoryCache();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.CookieHttpOnly = true;
+            });
             services.AddAutoMapper();
+            services.AddAntiforgery();
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
         }
 
@@ -88,6 +97,7 @@ namespace GsmRanking
             }
 
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GsmRanking.Services
 {
@@ -19,28 +20,33 @@ namespace GsmRanking.Services
         {
             news.CreateDate = DateTime.Now;
             _context.Add(news);
-            _context.SaveChanges();
+            SaveChanges();
         }
 
         public void DeleteNews(News news)
         {
             _context.Remove(news);
-            _context.SaveChanges();
+            SaveChanges();
         }
 
-        public void EditNews(News updatedNews)
+        public async Task<List<News>> GetAllNews(bool publishedOnly = false)
         {
-            _context.SaveChanges();
+            IQueryable<News> news;
+            if(publishedOnly)
+            {
+                news = _context.News.Where(n => n.IsPublished);
+            }
+            else
+            {
+                news = _context.News;
+            }
+
+            return await news.ToListAsync();
         }
 
-        public List<News> GetAllNews()
+        public async Task<News> GetNewsById(int id)
         {
-            return _context.News.ToList();
-        }
-
-        public News GetNewsById(int id)
-        {
-            return _context.News.SingleOrDefault(n => n.IdNews == id);
+            return await _context.News.SingleOrDefaultAsync(n => n.IdNews == id);
         }
 
         public void SaveChanges()
@@ -51,10 +57,9 @@ namespace GsmRanking.Services
 
     public interface INewsService
     {
-        List<News> GetAllNews();
-        News GetNewsById(int id);
+        Task<List<News>> GetAllNews(bool publishedOnly = false);
+        Task<News> GetNewsById(int id);
         void AddNews(News news);
-        void EditNews(News news);
         void DeleteNews(News news);
         void SaveChanges();
     }
