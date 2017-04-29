@@ -1,24 +1,25 @@
 ﻿@model IEnumerable<GsmRanking.Viewmodels.News.NewsCardViewModel>
-
 <div class="row">
-    <div class="col">
-        <div class="card-deck">
-            @foreach (var news in Model)
-            {
-                <div class="card">
-                    <img class="card-img-top" src="data:image/jpg;base64,@news.Image" alt="@news.Title" style="height: auto; width: 300px; " >
-                    <div class="card-block">
-                        <h4 class="card-title"><a href="@news.Url">@news.Title</a></h4>
-                        <p class="card-text">@news.ShortDescription<p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">@news.PublishDate</small>
-                    </div>
-                </div>    
-            }
-        </div>
-    </div>
+	<div class="col-md-12">
+		<h4>Newsy</h4>
+	</div>
 </div>
-
-
-
+<div class="row">
+	@foreach (var news in Model) {
+	<div class="col-md-4 ">
+		<div class="card" style="margin-bottom:1em;">
+			<div class="card-block">
+				<a href="@news.Url">
+					<h4 class="card-title">@news.Title</h4>
+					<img class="card-img-top" src="data:image/jpg;base64,@news.Image" alt="@news.Title" style="max-height:250px; width: auto; ">
+				</a>
+				<p class="card-text">@news.ShortDescription
+					<p>
+			</div>
+			<div class="card-footer">
+				<small class="text-muted">@news.PublishDate</small>
+			</div>
+		</div>
+	</div>
+	}
+</div>

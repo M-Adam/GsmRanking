@@ -9,16 +9,14 @@
     var phones = @Html.PartialAsync("~/Views/Phones/_NewestPhonesList.cshtml", Model.NewestPhones);
 }
 
-@await newsCarousel
-
-<div>
-    @await newsCards
-</div>
+<!--@await newsCarousel-->
 
 
-<div class="clearfix" style="height: 300px"></div>
 <div class="row">
-    <div class="col-9">
+    <div class="col-12">
+        @await newsCards
+    </div>
+    <div class="col-12">
        @await articles     
     </div>
     <div class="col-3">

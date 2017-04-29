@@ -5,22 +5,25 @@
     Layout = "_Layout";
     ViewData["Title"] = @Model.Title;
 }
+<div class="row">
+	
+	<div class="col-md-8">
+		<h1>@Model.Title</h1>
+		<small>Data utworzenia: @Model.CreateDate | </small> @if (Model.IsPublished) {
+		<small>Data publikacji: @Model.PublishDate | </small> }
+		<small>Wyświetlenia: @Model.ViewsCount</small>
+		<p>@Model.ShortText</p>
+	</div>
+	<div class="col-md-4">
+		<img class="card-img-top" src="data:image/jpg;base64,@Model.Image" alt="@Model.Title" style="height: auto; width: 300px; ">
 
-<h1>@Model.Title</h1>
-<small>Data utworzenia: @Model.CreateDate | </small>
-@if (Model.IsPublished)
-{
-    <small>Data publikacji: @Model.PublishDate | </small>
-}
-<small>Wyświetlenia: @Model.ViewsCount</small>
-<p>@Model.ShortText</p>
-<div id="news-image">
-    <img class="card-img-top" src="data:image/jpg;base64,@Model.Image" alt="@Model.Title" style="height: auto; width: 300px; ">
+	</div>
 </div>
-
-<br />
-<div>
-    <p>@Html.Raw(@Model.Content)</p>
+<div class="row">
+	<div class="col-md-12">
+		<br />
+		<div>
+			<p>@Html.Raw(@Model.Content)</p>
+		</div>
+	</div>
 </div>
-
-
