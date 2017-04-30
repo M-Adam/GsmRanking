@@ -108,7 +108,7 @@ namespace GsmRanking.Controllers
                     .Wait();
 
                 SetSuccess("Zalogowałeś się!");
-                return Ok();
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception e)
             {

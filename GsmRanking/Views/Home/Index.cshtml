@@ -1,4 +1,6 @@
 ﻿@using GsmRanking.ViewComponents
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Http.Authentication;
 @model GsmRanking.Viewmodels.Home.HomepageViewModel
 
 @{
@@ -8,9 +10,6 @@
     var articles = @Html.PartialAsync("~/Views/Articles/_ArticlesMainPage.cshtml", Model.NewestArticles);
     var phones = @Html.PartialAsync("~/Views/Phones/_NewestPhonesList.cshtml", Model.NewestPhones);
 }
-
-<!--@await newsCarousel-->
-
 
 <div class="row">
     <div class="col-12">

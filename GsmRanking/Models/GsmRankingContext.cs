@@ -242,7 +242,7 @@ namespace GsmRanking.Models
 
                 entity.Property(e => e.UserPassword)
                     .IsRequired()
-                    .HasColumnType("varchar(25)");
+                    .HasColumnType("varchar(64)");
 
                 entity.Property(e => e.UserType).HasDefaultValueSql("0");
 
