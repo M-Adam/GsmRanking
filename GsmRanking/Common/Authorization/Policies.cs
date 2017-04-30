@@ -8,10 +8,8 @@ namespace GsmRanking.Common.Authorization
 {
     public class Policies
     {
-        public const string Editor = "Edytor";
+        public const string Editor = "Editor";
         public const string Admin = "Admin";
-        public const string User = "Użytkownik";
-
     }
     
 }
