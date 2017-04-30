@@ -11,7 +11,8 @@
         }*@
     </ul>
     <ul class="navbar-nav float-right mr-auto">
-        @*@if (User.IsLoggedIn())
+        
+		@*@if (User.IsLoggedIn())
         {
             <li class="nav-item">
                 <navitem controller="User" action="UserData" class="nav-link"><fa class="fa-user" /> My Account</navitem>
@@ -36,7 +37,11 @@
         </li>*@
     </ul>
     <form class="form-inline my-2 my-lg-0">
+        <li class="nav-item">
+                    <li class="nav-item"><a asp-controller="Account" asp-action="Login">Zaloguj</a></li>
+
+        </li>
         @*<div class="input-group-addon" id="search-btndiv"><fa class="fa-search fa-fw" /></div>*@
-        <input id="query" class="form-control" type="text" placeholder="Search" />
+        @*<input id="query" class="form-control" type="text" placeholder="Search" />*@
     </form>
 </nav>
