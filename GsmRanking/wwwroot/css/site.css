@@ -41,3 +41,26 @@ textarea {
     max-width: inherit;
 }
 
+div#buttons-panel {
+    position: absolute;
+    bottom: 0;
+}
+
+.top-buffer {
+    margin-top: 100px;
+}
+div#news-header {
+    border-bottom: 1px solid gray;
+    padding-bottom: 5px;
+}
+
+div#news-panel {
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+div#buttons-panel {
+    width: 95%;
+    border-bottom: 1px solid gray;
+    padding-bottom: 10px;
+}

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿    using AutoMapper;
 using GsmRanking.Common;
 using GsmRanking.Models;
 using GsmRanking.Services;
@@ -19,8 +19,8 @@ namespace GsmRanking.Controllers
         private readonly INewsService _newsService;
         private readonly IMapper _mapper;
 
-        public const int ImageMaxWidth = 700;
-        public const int ImageMaxHeight = 700;
+        public const int ImageMaxWidth = 1000;
+        public const int ImageMaxHeight = 1000;
         public const int ImageMinWidth = 100;
         public const int ImageMinHeight = 100;
 

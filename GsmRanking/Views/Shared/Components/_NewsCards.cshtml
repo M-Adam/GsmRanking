@@ -6,15 +6,14 @@
 </div>
 <div class="row">
 	@foreach (var news in Model) {
-	<div class="col-md-4 ">
-		<div class="card" style="margin-bottom:1em;">
+	<div class="col-lg-4 col-md-6 col-sm-12" style="margin-top: 10px;">
+		<div class="card" style="margin-bottom:1em; height: 100%;">
 			<div class="card-block">
 				<a href="@news.Url">
 					<h4 class="card-title">@news.Title</h4>
-					<img class="card-img-top" src="data:image/jpg;base64,@news.Image" alt="@news.Title" style="max-height:250px; width: auto; ">
+					<img class="card-img-top" src="data:image/jpg;base64,@news.Image" alt="@news.Title" style="width:100%; ">
 				</a>
-				<p class="card-text">@news.ShortDescription
-					<p>
+				<p class="card-text">@news.ShortDescription</p>
 			</div>
 			<div class="card-footer">
 				<small class="text-muted">@news.PublishDate</small>
