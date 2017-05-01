@@ -228,9 +228,7 @@ namespace GsmRanking.Models
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.IdUser)
-                    .HasName("PK__Users__B7C9263824FAFE10");
-
-                entity.Property(e => e.IdUser).ValueGeneratedNever();
+                    .HasName("PK__tmp_ms_x__B7C926380507B4F3");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
