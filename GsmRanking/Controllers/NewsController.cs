@@ -11,6 +11,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using GsmRanking.Common.Authorization;
 
 namespace GsmRanking.Controllers
 {
@@ -52,6 +54,7 @@ namespace GsmRanking.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PreventDuplicateRequest]
+        [Authorize(Policy = Policies.Editor)]
         public async Task<IActionResult> Create(NewsCreateViewModel model)
         {
             if(!ModelState.IsValid)
@@ -86,11 +89,13 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Policy = Policies.Editor)]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Policy = Policies.Editor)]
         public async Task<IActionResult> Edit(int id)
         {
             var news = await _newsService.GetNewsById(id);
@@ -106,6 +111,7 @@ namespace GsmRanking.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PreventDuplicateRequest]
+        [Authorize(Policy = Policies.Editor)]
         public async Task<IActionResult> Edit(NewsEditViewModel model)
         {
             if (!ModelState.IsValid)
@@ -139,6 +145,7 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Policy = Policies.Editor)]
         public async Task<IActionResult> Delete(int id)
         {
             var news = await _newsService.GetNewsById(id);
@@ -153,6 +160,7 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Policy = Policies.Editor)]
         public async Task<IActionResult> Publish(int id, bool publish)
         {
             var news = await _newsService.GetNewsById(id);
@@ -179,6 +187,7 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index");
         }
 
+        [NonAction]
         private async Task<string> GetImageBase64FromFile(IFormFile imageUpload)
         {
             string output = string.Empty;
@@ -200,6 +209,7 @@ namespace GsmRanking.Controllers
             return output;
         }
 
+        [NonAction]
         private bool ValidateUploadedImageSize(int width, int height, string validationErrorKey)
         {
             bool isValid = true;

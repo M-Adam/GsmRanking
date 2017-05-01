@@ -13,10 +13,13 @@
         <h1>Wszystkie newsy</h1>
     </div>
     <div class="col-md-4" >
-        @*TODO: Show only for admin*@
-        <a class="btn btn-lg btn-block btn-success pull-right" asp-controller="News" asp-action="Create">
-	    Stwórz newsa
-	    </a>
+        @* TODO: Check user policy*@
+        @if (User.IsInRole("2") || User.IsInRole("1"))
+        {
+            <a class="btn btn-lg btn-block btn-success pull-right" asp-controller="News" asp-action="Create">
+	        Stwórz newsa
+	        </a>
+        }
     </div>
 </div>
 
@@ -42,7 +45,7 @@
             </div>
 			<div id="buttons-panel">
                         <a class="btn btn-primary btn-sm" asp-controller="News" asp-action="Details" asp-route-id="@Model[i].IdNews">Czytaj dalej</a>
-                        @* Adam: How to check user policy?*@
+                        @* TODO: Check user policy*@
                         @if (User.IsInRole("2") || User.IsInRole("1"))
                         {
                             @if (!Model[i].IsPublished) {
@@ -53,11 +56,11 @@
                                 <a class="btn btn-secondary btn-sm" asp-controller="News" asp-action="Publish" asp-route-id="@Model[i].IdNews" asp-route-publish="false">Ukryj</a>          
                             }
                             <a class="btn btn-warning btn-sm" asp-controller="News" asp-action="Edit" asp-route-id="@Model[i].IdNews">Edytuj</a>
-                        }           
-                        @if (User.IsInRole("2"))
-                        {
                             <a class="btn btn-danger btn-sm" asp-controller="News" asp-action="Delete" asp-route-id="@Model[i].IdNews">Usuń</a>
-                        }
+                        }           
+                       
+                            
+                        
 
                     </div>
         </div>
