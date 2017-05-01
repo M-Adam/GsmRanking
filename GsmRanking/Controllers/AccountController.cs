@@ -62,6 +62,11 @@ namespace GsmRanking.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel viewModel)
@@ -103,7 +108,7 @@ namespace GsmRanking.Controllers
                     .Wait();
 
                 SetSuccess("Zalogowałeś się!");
-                return Ok();
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception e)
             {

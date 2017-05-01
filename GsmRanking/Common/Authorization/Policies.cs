@@ -10,8 +10,6 @@ namespace GsmRanking.Common.Authorization
     {
         public const string Editor = "Editor";
         public const string Admin = "Admin";
-
-
     }
     
 }

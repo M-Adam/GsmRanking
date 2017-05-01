@@ -35,4 +35,12 @@
     <Folder Include="Common\AutomapperProfiles\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\UserManagement\UserAdd.cshtml" />
+    <Content Remove="Views\UserManagement\UserEdit.cshtml" />
+    <Content Remove="Views\UserManagement\UserManagementList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\UserManagementController.cs" />
+  </ItemGroup>
 </Project>

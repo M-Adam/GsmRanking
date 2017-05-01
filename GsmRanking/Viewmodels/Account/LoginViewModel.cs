@@ -9,15 +9,15 @@ namespace GsmRanking.Viewmodels.Account
         [DataType(DataType.Text)]
         [MinLength(3)]
         [MaxLength(100)]
-        [Display(Description = "Login")]
+        [Display(Name = "Login")]
         public string Login { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         [DataType(DataType.Password)]
-        [Display(Description = "Hasło")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
-        [Display(Description = "Zapamiętaj mnie")]
+        [Display(Name = "Zapamiętaj mnie")]
         public bool RememberMe { get; set; }
 
         [HiddenInput]
