@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace GsmRanking.Models
 {
-    public partial class Phones
+    public partial class Phone
     {
-        public Phones()
+        public Phone()
         {
-            Comments = new HashSet<Comments>();
+            Comments = new HashSet<Comment>();
         }
 
         public string Model { get; set; }
@@ -48,7 +48,7 @@ namespace GsmRanking.Models
         public int IdProducer { get; set; }
         public int IdPhone { get; set; }
 
-        public virtual ICollection<Comments> Comments { get; set; }
-        public virtual Producers IdProducerNavigation { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual Producer IdProducerNavigation { get; set; }
     }
 }

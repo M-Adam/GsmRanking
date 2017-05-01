@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace GsmRanking.Models
 {
-    public partial class Users
+    public partial class User
     {
-        public Users()
+        public User()
         {
-            Articles = new HashSet<Articles>();
-            Comments = new HashSet<Comments>();
+            Articles = new HashSet<Article>();
+            Comments = new HashSet<Comment>();
         }
 
         public int IdUser { get; set; }
@@ -19,7 +19,7 @@ namespace GsmRanking.Models
         public string UserPassword { get; set; }
         public byte UserType { get; set; }
 
-        public virtual ICollection<Articles> Articles { get; set; }
-        public virtual ICollection<Comments> Comments { get; set; }
+        public virtual ICollection<Article> Articles { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

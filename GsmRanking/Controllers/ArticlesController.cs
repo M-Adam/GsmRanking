@@ -60,7 +60,7 @@ namespace GsmRanking.Controllers
 
             try
             {
-                var article = _mapper.Map<Articles>(vm);
+                var article = _mapper.Map<Article>(vm);
                 _context.Articles.Add(article);
                 _context.SaveChanges();
                 SetSuccess("Pomyślnie dodano artykuł");

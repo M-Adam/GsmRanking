@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace GsmRanking.Models
 {
-    public partial class Articles
+    public partial class Article
     {
-        public Articles()
+        public Article()
         {
-            Comments = new HashSet<Comments>();
+            Comments = new HashSet<Comment>();
         }
 
         public int IdArticle { get; set; }
@@ -21,7 +21,7 @@ namespace GsmRanking.Models
         public DateTime? PublishDate { get; set; }
         public DateTime CreateDate { get; set; }
 
-        public virtual ICollection<Comments> Comments { get; set; }
-        public virtual Users IdAutorNavigation { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual User IdAutorNavigation { get; set; }
     }
 }

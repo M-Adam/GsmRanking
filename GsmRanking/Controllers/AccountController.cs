@@ -43,7 +43,7 @@ namespace GsmRanking.Controllers
 
             try
             {
-                _context.Users.Add(new Users()
+                _context.Users.Add(new User()
                 {
                     UserPassword = Hasher.HashPassword(viewModel.Password),
                     Username = viewModel.UserName,
@@ -78,7 +78,7 @@ namespace GsmRanking.Controllers
 
             try
             {
-                Users user;
+                User user;
                 if (viewModel.Login.Contains("@"))
                 {
                     user = _context.Users.FirstOrDefault(x => x.Email == viewModel.Login);
@@ -139,7 +139,7 @@ namespace GsmRanking.Controllers
         }
 
         [NonAction]
-        private ClaimsPrincipal CreateClaims(Users user)
+        private ClaimsPrincipal CreateClaims(User user)
         {
             var claims = new List<Claim>
             {

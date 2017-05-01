@@ -16,19 +16,19 @@ namespace GsmRanking.Services
             _context = context;
         }
 
-        public void AddUser(Users user)
+        public void AddUser(User user)
         {
             _context.Add(user);
             SaveChanges();
         }
 
-        public void DeleteUser(Users user)
+        public void DeleteUser(User user)
         {
             _context.Remove(user);
             SaveChanges();
         }
 
-        public async Task<Users> GetUserAsync(int id)
+        public async Task<User> GetUserAsync(int id)
         {
             return await _context.Users.SingleOrDefaultAsync(n => n.IdUser == id);
         }
@@ -46,10 +46,10 @@ namespace GsmRanking.Services
 
     public interface IUserService
     {
-        Task<Users> GetUserAsync(int id);
+        Task<User> GetUserAsync(int id);
         Task<bool> CheckIfLoginExists(string login);
-        void AddUser(Users user);
-        void DeleteUser(Users user);
+        void AddUser(User user);
+        void DeleteUser(User user);
         void SaveChanges();
     }
 }

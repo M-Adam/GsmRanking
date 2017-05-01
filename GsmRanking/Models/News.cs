@@ -7,7 +7,7 @@ namespace GsmRanking.Models
     {
         public News()
         {
-            Comments = new HashSet<Comments>();
+            Comments = new HashSet<Comment>();
         }
 
         public int IdNews { get; set; }
@@ -21,6 +21,6 @@ namespace GsmRanking.Models
         public DateTime? PublishDate { get; set; }
         public DateTime CreateDate { get; set; }
 
-        public virtual ICollection<Comments> Comments { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

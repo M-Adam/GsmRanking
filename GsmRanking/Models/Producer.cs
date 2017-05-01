@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace GsmRanking.Models
 {
-    public partial class Producers
+    public partial class Producer
     {
-        public Producers()
+        public Producer()
         {
-            Phones = new HashSet<Phones>();
+            Phones = new HashSet<Phone>();
         }
 
         public int IdProducer { get; set; }
         public string ProducerName { get; set; }
 
-        public virtual ICollection<Phones> Phones { get; set; }
+        public virtual ICollection<Phone> Phones { get; set; }
     }
 }

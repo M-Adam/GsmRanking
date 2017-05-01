@@ -6,12 +6,12 @@ namespace GsmRanking.Models
 {
     public partial class GsmRankingContext : DbContext
     {
-        public virtual DbSet<Articles> Articles { get; set; }
-        public virtual DbSet<Comments> Comments { get; set; }
+        public virtual DbSet<Article> Articles { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<News> News { get; set; }
-        public virtual DbSet<Phones> Phones { get; set; }
-        public virtual DbSet<Producers> Producers { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Phone> Phones { get; set; }
+        public virtual DbSet<Producer> Producers { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -21,7 +21,7 @@ namespace GsmRanking.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Articles>(entity =>
+            modelBuilder.Entity<Article>(entity =>
             {
                 entity.HasKey(e => e.IdArticle)
                     .HasName("PK__Articles__2CC641E4540FEC23");
@@ -51,7 +51,7 @@ namespace GsmRanking.Models
                     .HasConstraintName("FK__Articles__IdAuto__7BE56230");
             });
 
-            modelBuilder.Entity<Comments>(entity =>
+            modelBuilder.Entity<Comment>(entity =>
             {
                 entity.HasKey(e => e.IdComment)
                     .HasName("PK__Comments__57C9AD58DB2A5A3A");
@@ -106,7 +106,7 @@ namespace GsmRanking.Models
                 entity.Property(e => e.ViewsCount).HasDefaultValueSql("0");
             });
 
-            modelBuilder.Entity<Phones>(entity =>
+            modelBuilder.Entity<Phone>(entity =>
             {
                 entity.HasKey(e => e.IdPhone)
                     .HasName("PK__Phones__7F4A3AF04891BE6F");
@@ -217,7 +217,7 @@ namespace GsmRanking.Models
                     .HasConstraintName("FK__Phones__IdProduc__7814D14C");
             });
 
-            modelBuilder.Entity<Producers>(entity =>
+            modelBuilder.Entity<Producer>(entity =>
             {
                 entity.HasKey(e => e.IdProducer)
                     .HasName("PK__Producer__09880C664B2E059D");
@@ -225,7 +225,7 @@ namespace GsmRanking.Models
                 entity.Property(e => e.ProducerName).HasColumnType("varchar(40)");
             });
 
-            modelBuilder.Entity<Users>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.IdUser)
                     .HasName("PK__tmp_ms_x__B7C926380507B4F3");
