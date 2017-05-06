@@ -1,23 +1,24 @@
 ﻿﻿@using GsmRanking.Models;
+@using GsmRanking.Common.Authorization
 @using Microsoft.AspNetCore.Authorization;
-@inject IAuthorizationService AuthorizationService
 
-@model IList<News>
+
+@model IList<GsmRanking.Models.News>
 
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Wszystkie newsy";
+    var authorized = await AuthorizationService.AuthorizeAsync(User, Policies.Editor);
 }
 <div class="row" id="news-header">
     <div class="col-md-8">
         <h1>Wszystkie newsy</h1>
     </div>
     <div class="col-md-4" >
-        @* TODO: Check user policy*@
-        @if (User.IsInRole("2") || User.IsInRole("1"))
+        @if (authorized)
         {
             <a class="btn btn-lg btn-block btn-success pull-right" asp-controller="News" asp-action="Create">
-	        Stwórz newsa
+	            Stwórz newsa
 	        </a>
         }
     </div>
@@ -45,10 +46,10 @@
             </div>
 			<div id="buttons-panel">
                         <a class="btn btn-primary btn-sm" asp-controller="News" asp-action="Details" asp-route-id="@Model[i].IdNews">Czytaj dalej</a>
-                        @* TODO: Check user policy*@
-                        @if (User.IsInRole("2") || User.IsInRole("1"))
+                        @if (authorized)
                         {
-                            @if (!Model[i].IsPublished) {
+                            if (!Model[i].IsPublished)
+                            {
                                 <a class="btn btn-success btn-sm" asp-controller="News" asp-action="Publish" asp-route-id="@Model[i].IdNews" asp-route-publish="true">Opublikuj</a>                        
                             }
                             else
