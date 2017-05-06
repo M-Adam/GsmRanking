@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GsmRanking.Services
@@ -46,12 +47,38 @@ namespace GsmRanking.Services
 
         public async Task<News> GetNewsById(int id)
         {
-            return await _context.News.SingleOrDefaultAsync(n => n.IdNews == id);
+            return await _context
+                .News
+                .Include(x=>x.Comments)
+                .ThenInclude(x=>x.IdAutorNavigation)
+                .FirstOrDefaultAsync(n => n.IdNews == id);
         }
 
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        public void AddComment(string commentContent, int newsId, int userId)
+        {
+            _context.Comments.Add(new Comment()
+            {
+                Content = commentContent,
+                CreateDate = DateTime.Now,
+                IdAutor = userId,
+                IdNews = newsId
+            });
+            SaveChanges();
+        }
+
+        public void DeleteComment(int commentId)
+        {
+            var comment = _context.Comments.Find(commentId);
+            if (comment != null)
+            {
+                _context.Comments.Remove(comment);
+                SaveChanges();
+            }
         }
     }
 
@@ -62,5 +89,7 @@ namespace GsmRanking.Services
         void AddNews(News news);
         void DeleteNews(News news);
         void SaveChanges();
+        void AddComment(string commentContent, int newsId, int userId);
+        void DeleteComment(int commentId);
     }
 }

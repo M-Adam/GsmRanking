@@ -145,6 +145,7 @@ namespace GsmRanking.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Email, user.Email, ClaimValueTypes.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.IdUser.ToString()),
                 new Claim(ClaimTypes.Role, ((UserTypeEnum)user.UserType).ToString()),
             };
             

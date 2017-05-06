@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using GsmRanking.Common;
 using GsmRanking.Common.Authorization;
 using GsmRanking.Common.Enums;
 using GsmRanking.Models;
@@ -16,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using GsmRanking.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace GsmRanking
 {
@@ -66,6 +69,9 @@ namespace GsmRanking
                 x.AddPolicy(Policies.Admin, builder => builder.RequireAssertion(y =>
                     y.User.IsInRole(UserTypeEnum.Admin.ToString()))
                 );
+                x.DefaultPolicy = new AuthorizationPolicyBuilder(AuthenticationScheme)
+                    .AddRequirements(new AssertionRequirement(y=>y.User.IsLoggedIn()))
+                    .Build();
             });
             services.AddDistributedMemoryCache();
             services.AddSession(options =>

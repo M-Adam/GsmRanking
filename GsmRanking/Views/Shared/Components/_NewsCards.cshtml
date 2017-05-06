@@ -16,7 +16,9 @@
 				<p class="card-text">@news.ShortDescription</p>
 			</div>
 			<div class="card-footer">
-				<small class="text-muted">@news.PublishDate</small>
+			    <small class=""><fa class="fa-calendar"/> @news.PublishDate</small>
+			    <small class="text-muted pull-right">&nbsp;<fa class="fa-eye"/> @news.ViewsCount </small>
+                <small class="text-muted pull-right"><fa class="fa-comment"/> @news.CommentCount</small>
 			</div>
 		</div>
 	</div>

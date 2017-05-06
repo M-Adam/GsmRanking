@@ -1,22 +1,29 @@
-﻿@using GsmRanking.Models;
+﻿@using GsmRanking.Common
+@using GsmRanking.Common.Authorization
+@using GsmRanking.Models;
 @model News
 
 @{
     Layout = "_Layout";
     ViewData["Title"] = @Model.Title;
+    var isEditor = await AuthorizationService.AuthorizeAsync(User, Policies.Editor);
 }
 <div class="row">
 	
 	<div class="col">
-		<h1>@Model.Title</h1>
-        @if(@Model.PublishDate == null)
-		{
-            <small>Nieopublikowany</small>
-		} else 
-		{
-		    <small>@Model.PublishDate</small>
-		}
-		<small> Wyświetlenia: @Model.ViewsCount</small>
+	    <h1>@Model.Title</h1>
+	        @if(@Model.PublishDate == null)
+	        {
+	            <small>Nieopublikowany</small>
+	        }
+	        else
+	        {
+	            <small><fa class="fa-calendar" /> Data publikacji: @Model.PublishDate</small>
+	        }
+	    <br/>
+	    <small><fa class="fa-eye" /> Wyświetlenia: @Model.ViewsCount</small>
+	    <br/><br />
+        <p><strong>@Model.ShortText</strong></p>
 	</div>
 	<div class="col">
                 <img class="card-img-top" src="data:image/jpg;base64,@Model.Image" alt="@Model.Title" style="margin: auto; ">
@@ -24,10 +31,64 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-12">
-		<br />
-		<div>
-			<p>@Html.Raw(@Model.Content)</p>
-		</div>
-	</div>
+    <div class="col-md-12">
+        <br />
+        <div>
+            <p>@Html.Raw(@Model.Content)</p>
+        </div>
+    </div>
 </div>
+<div class="row">
+    <div class="col-md-8">
+        <hr/>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-8 m-2">
+        <h3>Komentarze:</h3>
+        @foreach (var comment in Model.Comments)
+        {
+            <div>
+                <p>
+                    <strong class="m-1">@comment.IdAutorNavigation.Username</strong> - @comment.CreateDate
+                    @if (isEditor)
+                    {
+                        <button type="button" class="btn btn-sm btn-outline-danger delete-comment" data-comment-id="@comment.IdComment"><fa class="fa-trash-o" /></button>
+                    }
+                    <br/>
+                    <span class="m-2">@comment.Content</span>
+                </p>
+            </div>
+            <hr/>
+        }
+        @if (User.IsLoggedIn())
+        {
+            <form asp-action="AddComment" asp-controller="News" asp-antiforgery="true">
+                <input hidden="hidden" type="hidden" name="newsId" value="@Model.IdNews"/>
+                <textarea name="commentContent" class="form-control" rows="3"></textarea>
+                <button class="btn btn-success m-1"><fa class="fa-plus" /> <b>Dodaj komentarz</b></button>
+            </form>
+        }
+        else
+        {
+            <p class="alert-warning">Zaloguj się, by móc dodawać komentarze!</p>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(function() {
+            $('.delete-comment').off().on('click',
+                function () {
+                    if (confirm('Usunąć komentarz?')) {
+                        var commentId = $(this).data('comment-id');
+                        $.post('@Url.Action("DeleteComment", "News")', { commentId: commentId })
+                            .always(function () {
+                                location.reload();
+                        });
+                    }
+        });
+    })
+    </script>
+}

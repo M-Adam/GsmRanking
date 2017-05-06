@@ -9,7 +9,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using GsmRanking.Common.Authorization;
@@ -234,6 +235,49 @@ namespace GsmRanking.Controllers
                 isValid = false;
             }
             return isValid;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult AddComment(string commentContent, int newsId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(commentContent) || commentContent.Length > 150)
+                {
+                    SetError("Niedozwolona długość komentarza.");
+                }
+                else
+                {
+                    _newsService.AddComment(commentContent, newsId,
+                        int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+                    SetSuccess("Pomyślnie dodano komentarz!");
+                }
+            }
+            catch (Exception e)
+            {
+                SetError(e);
+            }
+            
+            return RedirectToAction("Details", new { id = newsId });
+        }
+
+        [HttpPost]
+        [Authorize(Policy = Policies.Editor)]
+        public IActionResult DeleteComment(int commentId)
+        {
+            try
+            {
+                _newsService.DeleteComment(commentId);
+                SetSuccess("Pomyślnie usunięto komentarz");
+            }
+            catch (Exception e)
+            {
+                SetError(e);
+            }
+            
+            return Ok();
         }
     }
 }

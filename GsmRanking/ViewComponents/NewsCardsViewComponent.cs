@@ -12,7 +12,7 @@ namespace GsmRanking.ViewComponents
 {
     public class NewsCardsViewComponent : ViewComponent
     {
-        private INewsService _newsService;
+        private readonly INewsService _newsService;
         
         public NewsCardsViewComponent([FromServices] INewsService newsService)
         {
@@ -22,7 +22,7 @@ namespace GsmRanking.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             IEnumerable<News> allNews = await _newsService.GetAllNews(true);
-            List<NewsCardViewModel> model = new List<NewsCardViewModel>();
+            var model = new List<NewsCardViewModel>();
 
             foreach (var news in allNews)
             {
@@ -33,7 +33,9 @@ namespace GsmRanking.ViewComponents
                     ShortDescription = news.ShortText,
                     IsPublished = news.IsPublished,
                     PublishDate = news.PublishDate,
-                    Image = news.Image
+                    Image = news.Image,
+                    CommentCount = news.Comments.Count,
+                    ViewsCount = news.ViewsCount
                 });
             }
 
