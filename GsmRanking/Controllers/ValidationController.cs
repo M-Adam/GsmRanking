@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GsmRanking.Models;
 using GsmRanking.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GsmRanking.Controllers
 {
@@ -20,20 +21,20 @@ namespace GsmRanking.Controllers
         [HttpGet]
         public async Task<JsonResult> VerifyUsername(string username)
         {
-            //if (await _userService.AnyAsync(x => x.Username == username))
-            //{
-            //    return Json(data: $"Username {username} is already in use.");
-            //}
+            if(await _context.Users.AnyAsync(x=>x.Username == username))
+            {
+                return Json(data: $"Nazwa użytkownika {username} jest już zajęta.");
+            }
             return Json(data: true);
         }
 
         [HttpGet]
         public async Task<JsonResult> VerifyEmail(string email)
         {
-            //if (await _userService.AnyAsync(x => x.Email == email))
-            //{
-            //    return Json(data: $"Email {email} is already in use.");
-            //}
+            if (await _context.Users.AnyAsync(x => x.Email == email))
+            {
+                return Json(data: $"Email {email} jest już zajęty.");
+            }
             return Json(data: true);
         }
     }

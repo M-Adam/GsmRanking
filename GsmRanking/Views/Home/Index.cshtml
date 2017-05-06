@@ -1,24 +1,12 @@
 ﻿@using GsmRanking.ViewComponents
-@using Microsoft.AspNetCore.Http;
-@using Microsoft.AspNetCore.Http.Authentication;
-@model GsmRanking.Viewmodels.Home.HomepageViewModel
 
 @{
     ViewData["Title"] = "Strona główna";
-    var newsCarousel = Component.InvokeAsync<CarouselViewComponent>();
     var newsCards = Component.InvokeAsync<NewsCardsViewComponent>();
-    var articles = @Html.PartialAsync("~/Views/Articles/_ArticlesMainPage.cshtml", Model.NewestArticles);
-    var phones = @Html.PartialAsync("~/Views/Phones/_NewestPhonesList.cshtml", Model.NewestPhones);
 }
 
 <div class="row">
-    <div class="col-12">
+    <div class="col">
         @await newsCards
-    </div>
-    <div class="col-12">
-       @await articles     
-    </div>
-    <div class="col-3">
-      @await phones     
     </div>
 </div>

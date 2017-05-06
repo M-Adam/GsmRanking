@@ -57,7 +57,6 @@ namespace GsmRanking
             //Dependency injection mapping
             services.AddTransient<INewsService, NewsService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPhoneService, PhoneService>();
 
             services.AddAuthorization(x =>
             {
@@ -68,7 +67,6 @@ namespace GsmRanking
                     y.User.IsInRole(UserTypeEnum.Admin.ToString()))
                 );
             });
-            services.AddDistributedMemoryCache();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {

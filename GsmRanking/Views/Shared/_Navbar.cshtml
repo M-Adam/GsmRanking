@@ -9,7 +9,7 @@
             @if (User.Identity.Name != null)
             {
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="User" asp-action="UserData" ><fa class="fa-user" /> Konto (@User.Identity.Name)</a>
+                    <span class="nav-link"><fa class="fa-user" /> Witaj, @User.Identity.Name!</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Account" asp-action="Logout" ><fa class="fa-sign-out" /> Wyloguj</a>
