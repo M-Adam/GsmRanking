@@ -7,7 +7,6 @@ namespace GsmRanking.Models
     {
         public User()
         {
-            Articles = new HashSet<Article>();
             Comments = new HashSet<Comment>();
         }
 
@@ -19,7 +18,6 @@ namespace GsmRanking.Models
         public string UserPassword { get; set; }
         public byte UserType { get; set; }
 
-        public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
     }
 }
