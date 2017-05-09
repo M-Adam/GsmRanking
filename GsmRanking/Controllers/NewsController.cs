@@ -79,7 +79,7 @@ namespace GsmRanking.Controllers
                         return View(model);
                     }
                 }
-
+                news.IdAutor = GetUserId();
                 _newsService.AddNews(news);
                 SetSuccess($"Pomyślnie utworzono news '{model.Title}'");
             }
@@ -250,8 +250,7 @@ namespace GsmRanking.Controllers
                 }
                 else
                 {
-                    _newsService.AddComment(commentContent, newsId,
-                        int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+                    _newsService.AddComment(commentContent, newsId, GetUserId());
                     SetSuccess("Pomyślnie dodano komentarz!");
                 }
             }

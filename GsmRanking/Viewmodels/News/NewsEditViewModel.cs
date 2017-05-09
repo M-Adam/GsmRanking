@@ -29,5 +29,7 @@ namespace GsmRanking.Viewmodels.News
         public IFormFile ImageUpload { get; set; }
 
         public string Image { get; set; }
+
+        public string AuthorName { get; set; }
     }
 }

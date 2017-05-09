@@ -22,5 +22,6 @@ namespace GsmRanking.Models
         public DateTime CreateDate { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual User IdAutorNavigation { get; set; }
     }
 }

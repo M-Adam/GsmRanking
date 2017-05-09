@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication.ExtendedProtection;
 using System.Threading.Tasks;
 
 namespace GsmRanking.Viewmodels.News
@@ -15,5 +16,6 @@ namespace GsmRanking.Viewmodels.News
         public DateTime? PublishDate { get; set; }
         public int CommentCount { get; set; }
         public int ViewsCount { get; set; }
+        public string AuthorName { get; set; }
     }
 }

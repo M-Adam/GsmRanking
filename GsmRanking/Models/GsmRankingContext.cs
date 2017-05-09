@@ -61,6 +61,12 @@ namespace GsmRanking.Models
                     .HasColumnType("varchar(255)");
 
                 entity.Property(e => e.ViewsCount).HasDefaultValueSql("0");
+
+                entity.HasOne(d => d.IdAutorNavigation)
+                    .WithMany(p => p.News)
+                    .HasForeignKey(d => d.IdAutor)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_News_Users");
             });
 
             modelBuilder.Entity<User>(entity =>

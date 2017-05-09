@@ -32,23 +32,20 @@ namespace GsmRanking.Services
 
         public async Task<List<News>> GetAllNews(bool publishedOnly = false)
         {
-            IQueryable<News> news;
+            var news = _context.News.Include(x => x.IdAutorNavigation).AsNoTracking();
             if(publishedOnly)
             {
-                news = _context.News.Where(n => n.IsPublished);
+                news = news.Where(n => n.IsPublished);
             }
-            else
-            {
-                news = _context.News;
-            }
-
-            return await news.ToListAsync();
+            
+            return await news.OrderByDescending(x=>x.PublishDate).ToListAsync();
         }
 
         public async Task<News> GetNewsById(int id)
         {
             return await _context
                 .News
+                .Include(x=>x.IdAutorNavigation)
                 .Include(x=>x.Comments)
                 .ThenInclude(x=>x.IdAutorNavigation)
                 .FirstOrDefaultAsync(n => n.IdNews == id);

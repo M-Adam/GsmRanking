@@ -8,6 +8,7 @@ namespace GsmRanking.Models
         public User()
         {
             Comments = new HashSet<Comment>();
+            News = new HashSet<News>();
         }
 
         public int IdUser { get; set; }
@@ -19,5 +20,6 @@ namespace GsmRanking.Models
         public byte UserType { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<News> News { get; set; }
     }
 }

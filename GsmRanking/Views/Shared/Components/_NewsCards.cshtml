@@ -13,7 +13,8 @@
 					<h4 class="card-title">@news.Title</h4>
 					<img class="card-img-top" src="data:image/jpg;base64,@news.Image" alt="@news.Title" style="width:100%; ">
 				</a>
-				<p class="card-text">@news.ShortDescription</p>
+			    <p class="card-text">@news.ShortDescription</p>
+			    <p class="pull-right text-muted" style="position:absolute; bottom:3em;right:1em"><i>@news.AuthorName</i></p>
 			</div>
 			<div class="card-footer">
 			    <small class=""><fa class="fa-calendar"/> @news.PublishDate</small>

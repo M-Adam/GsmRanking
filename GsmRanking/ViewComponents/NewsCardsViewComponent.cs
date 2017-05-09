@@ -35,7 +35,8 @@ namespace GsmRanking.ViewComponents
                     PublishDate = news.PublishDate,
                     Image = news.Image,
                     CommentCount = news.Comments.Count,
-                    ViewsCount = news.ViewsCount
+                    ViewsCount = news.ViewsCount,
+                    AuthorName = news.IdAutorNavigation.Username
                 });
             }
 
