@@ -5,12 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace GsmRanking.Services
 {
     public class NewsService : GsmRankingBaseService, INewsService
     {
         private GsmRankingContext _context;
+
+        private IIncludableQueryable<News, User> NewsInclude => _context
+            .News
+            .Include(x => x.IdAutorNavigation)
+            .Include(x => x.Comments)
+            .ThenInclude(x => x.IdAutorNavigation);
 
         public NewsService(GsmRankingContext context)
         {
@@ -32,7 +39,7 @@ namespace GsmRanking.Services
 
         public async Task<List<News>> GetAllNews(bool publishedOnly = false)
         {
-            var news = _context.News.Include(x => x.IdAutorNavigation).AsNoTracking();
+            var news = NewsInclude.AsNoTracking();
             if(publishedOnly)
             {
                 news = news.Where(n => n.IsPublished);
@@ -43,12 +50,7 @@ namespace GsmRanking.Services
 
         public async Task<News> GetNewsById(int id)
         {
-            return await _context
-                .News
-                .Include(x=>x.IdAutorNavigation)
-                .Include(x=>x.Comments)
-                .ThenInclude(x=>x.IdAutorNavigation)
-                .FirstOrDefaultAsync(n => n.IdNews == id);
+            return await NewsInclude.FirstOrDefaultAsync(n => n.IdNews == id);
         }
 
         public void SaveChanges()

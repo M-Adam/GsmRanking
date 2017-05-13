@@ -244,9 +244,13 @@ namespace GsmRanking.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(commentContent) || commentContent.Length > 150)
+                if (string.IsNullOrWhiteSpace(commentContent) )
                 {
-                    SetError("Niedozwolona długość komentarza.");
+                    SetError("Komentarz nie może być pusty.");
+                }
+                else if (commentContent.Length > 150)
+                {
+                    SetError("Długość komentarza nie może przekraczać 150 znaków.");
                 }
                 else
                 {
