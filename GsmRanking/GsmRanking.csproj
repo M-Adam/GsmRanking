@@ -3,6 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
+    <PackageId>GsmNews</PackageId>
+    <Company>GsmNews</Company>
+    <Product>GsmNews</Product>
+    <Description>GsmNews</Description>
+    <Authors>Łukasz Jóźwik, Bartłomiej Kiljanek, Adrian Malec, Adam Mołczan</Authors>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.0.2" />
